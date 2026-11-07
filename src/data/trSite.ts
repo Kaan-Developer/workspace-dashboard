@@ -1,4 +1,5 @@
 import type { SiteContent } from "./enSite";
+import { LuFolder, LuSquareCheck, LuTarget, LuUnplug } from "react-icons/lu";
 
 export const trSite = {
   site: {
@@ -30,18 +31,29 @@ export const trSite = {
     stats: {
       activeProjects: {
         label: "Aktif projeler",
+        icon: LuFolder,
+        value: 4,
+        detailCount: 2,
         detail: (count: number) => `${count} proje sonraki adımın için hazır`,
       },
       tasksCompleted: {
         label: "Tamamlanan görevler",
+        icon: LuSquareCheck,
+        value: 48,
+        detailCount: 12,
         detail: (count: number) => `Geçen haftaya göre ${count} fazla`,
       },
       goalsInProgress: {
         label: "Devam eden hedefler",
+        icon: LuTarget,
+        value: 3,
+        detailCount: 1,
         detail: (count: number) => `${count} kilometre taşı yaklaşıyor`,
       },
       connectedServices: {
         label: "Bağlı hizmetler",
+        icon: LuUnplug,
+        value: 4,
         detail: "Tüm bağlantılar sorunsuz",
       },
     },

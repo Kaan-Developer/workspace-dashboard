@@ -1,3 +1,5 @@
+import { LuFolder, LuSquareCheck, LuTarget, LuUnplug } from "react-icons/lu";
+
 export const enSite = {
   site: {
     name: "Workspace",
@@ -28,18 +30,29 @@ export const enSite = {
     stats: {
       activeProjects: {
         label: "Active projects",
+        icon: LuFolder,
+        value: 4,
+        detailCount: 2,
         detail: (count: number) => `${count} ready for your next step`,
       },
       tasksCompleted: {
         label: "Tasks completed",
+        icon: LuSquareCheck,
+        value: 48,
+        detailCount: 12,
         detail: (count: number) => `${count} more than last week`,
       },
       goalsInProgress: {
         label: "Goals in progress",
+        icon: LuTarget,
+        value: 3,
+        detailCount: 1,
         detail: (count: number) => `${count} ${count === 1 ? "milestone" : "milestones"} approaching`,
       },
       connectedServices: {
         label: "Connected services",
+        icon: LuUnplug,
+        value: 4,
         detail: "All connections healthy",
       },
     },
