@@ -2,6 +2,7 @@ import { enSite } from "@/data/enSite";
 import { Button } from "@/components/ui/button";
 import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
+import ChartBarDefault from "@/components/ui/Chart";
 
 const Overview = () => {
   const overview = enSite.overview;
@@ -53,7 +54,9 @@ const Overview = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
-        <Card></Card>
+        <Card>
+          <ChartBarDefault />
+        </Card>
 
         <Card></Card>
 
