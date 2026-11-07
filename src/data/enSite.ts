@@ -1,4 +1,9 @@
-import { LuFolder, LuSquareCheck, LuTarget, LuUnplug } from "react-icons/lu";
+import {
+  LuCalendarDays,
+  LuFolder,
+  LuGitBranch,
+  LuSquareCheck,
+} from "react-icons/lu";
 
 export const enSite = {
   site: {
@@ -28,32 +33,30 @@ export const enSite = {
     title: "Overview",
     description: "Your projects, priorities, and progress. All in one place.",
     stats: {
-      activeProjects: {
-        label: "Active projects",
+      trackedProjects: {
+        label: "Tracked projects",
         icon: LuFolder,
         value: 4,
         detailCount: 2,
-        detail: (count: number) => `${count} ready for your next step`,
+        detail: (count: number) => `${count} in progress`,
       },
-      tasksCompleted: {
-        label: "Tasks completed",
+      commits: {
+        label: "Commits · 7 days",
+        icon: LuGitBranch,
+        value: 38,
+        detail: "Across tracked repositories",
+      },
+      activeDays: {
+        label: "Active days",
+        icon: LuCalendarDays,
+        value: "6 / 7",
+        detail: "Nov 1 – Nov 7",
+      },
+      openTasks: {
+        label: "Open tasks",
         icon: LuSquareCheck,
-        value: 48,
-        detailCount: 12,
-        detail: (count: number) => `${count} more than last week`,
-      },
-      goalsInProgress: {
-        label: "Goals in progress",
-        icon: LuTarget,
-        value: 3,
-        detailCount: 1,
-        detail: (count: number) => `${count} ${count === 1 ? "milestone" : "milestones"} approaching`,
-      },
-      connectedServices: {
-        label: "Connected services",
-        icon: LuUnplug,
-        value: 4,
-        detail: "All connections healthy",
+        value: 5,
+        detail: "2 in progress · 3 to do",
       },
     },
   },

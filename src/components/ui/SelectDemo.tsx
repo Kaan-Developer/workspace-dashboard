@@ -17,7 +17,7 @@ export function SelectDemo() {
   return (
     <Select>
       <SelectTrigger className="w-full max-w-48">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="Select a History" />
       </SelectTrigger>
 
       <SelectContent>

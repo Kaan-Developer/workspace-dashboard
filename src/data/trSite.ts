@@ -1,5 +1,10 @@
 import type { SiteContent } from "./enSite";
-import { LuFolder, LuSquareCheck, LuTarget, LuUnplug } from "react-icons/lu";
+import {
+  LuCalendarDays,
+  LuFolder,
+  LuGitBranch,
+  LuSquareCheck,
+} from "react-icons/lu";
 
 export const trSite = {
   site: {
@@ -29,32 +34,30 @@ export const trSite = {
     title: "Genel Bakış",
     description: "Projelerin, önceliklerin ve ilerlemen. Hepsi bir arada.",
     stats: {
-      activeProjects: {
-        label: "Aktif projeler",
+      trackedProjects: {
+        label: "Takip edilen projeler",
         icon: LuFolder,
         value: 4,
         detailCount: 2,
-        detail: (count: number) => `${count} proje sonraki adımın için hazır`,
+        detail: (count: number) => `${count} devam ediyor`,
       },
-      tasksCompleted: {
-        label: "Tamamlanan görevler",
+      commits: {
+        label: "Commit · 7 gün",
+        icon: LuGitBranch,
+        value: 38,
+        detail: "Takip edilen depolarda",
+      },
+      activeDays: {
+        label: "Aktif günler",
+        icon: LuCalendarDays,
+        value: "6 / 7",
+        detail: "1 Kas – 7 Kas",
+      },
+      openTasks: {
+        label: "Açık görevler",
         icon: LuSquareCheck,
-        value: 48,
-        detailCount: 12,
-        detail: (count: number) => `Geçen haftaya göre ${count} fazla`,
-      },
-      goalsInProgress: {
-        label: "Devam eden hedefler",
-        icon: LuTarget,
-        value: 3,
-        detailCount: 1,
-        detail: (count: number) => `${count} kilometre taşı yaklaşıyor`,
-      },
-      connectedServices: {
-        label: "Bağlı hizmetler",
-        icon: LuUnplug,
-        value: 4,
-        detail: "Tüm bağlantılar sorunsuz",
+        value: 5,
+        detail: "2 devam ediyor · 3 yapılacak",
       },
     },
   },
