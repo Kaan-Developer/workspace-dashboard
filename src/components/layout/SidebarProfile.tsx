@@ -46,9 +46,15 @@ const SidebarProfile  = ({name, email, onAccount, onLogout}: SidebarProfileProps
         sideOffset={8}
         className="w-56"
       >
-        <DropdownMenuLabel>
-          <span className="block text-sm text-foreground">{name}</span>
+        <DropdownMenuLabel className="flex items-center justify-start gap-2">
+                              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-sidebar-accent">
+            <LuUser size={18} aria-hidden="true" />
+          </span>
+
+          <div className="flex flex-col">
+                      <span className="block text-sm text-foreground">{name}</span>
           <span className="block truncate font-normal">{email}</span>
+          </div>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
