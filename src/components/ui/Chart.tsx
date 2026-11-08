@@ -498,7 +498,7 @@ export function ChartBarLabel() {
       <CardHeader className="flex-row items-center justify-between">
         <div className="flex items-center justify-center gap-2">
           <FaGithub size={28} className="shrink-0" aria-hidden="true" />
-          <div className="flex flex-col">
+          <div className="flex flex-col items-start">
                               <CardTitle>Commit activity</CardTitle>
         <CardDescription>My commits across tracked repositories</CardDescription>
           </div>

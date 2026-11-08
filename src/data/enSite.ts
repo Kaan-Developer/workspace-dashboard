@@ -100,6 +100,22 @@ export const enSite = {
         lastCommit: { time: "2 hours ago", message: "fix: improve mobile navigation" },
         openTasks: 0,
       },
+      {
+        id: "ui-components",
+        name: "ui-components",
+        description: "Reusable components for React projects.",
+        status: "inProgress",
+        lastCommit: { time: "Yesterday", message: "refactor: simplify button variants" },
+        openTasks: 2,
+      },
+      {
+        id: "weather-app",
+        name: "weather-app",
+        description: "A simple weather app with city search.",
+        status: "paused",
+        lastCommit: { time: "3 days ago", message: "fix: handle empty search" },
+        openTasks: 2,
+      },
     ],
   },
   navbar: {
