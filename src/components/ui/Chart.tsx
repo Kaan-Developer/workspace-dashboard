@@ -4,6 +4,7 @@ import * as React from "react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 import * as RechartsPrimitive from "recharts";
 import { LuTrendingUp } from "react-icons/lu";
+import { FaGithub } from "react-icons/fa";
 
 import Card from "@/components/ui/Card";
 import { SelectDemo } from "@/components/ui/SelectDemo";
@@ -495,9 +496,12 @@ export function ChartBarLabel() {
   return (
     <>
       <CardHeader className="flex-row items-center justify-between">
-        <div className="flex flex-col gap-2">
-                  <CardTitle>Commit activity</CardTitle>
+        <div className="flex items-center justify-center gap-2">
+          <FaGithub size={28} className="shrink-0" aria-hidden="true" />
+          <div className="flex flex-col">
+                              <CardTitle>Commit activity</CardTitle>
         <CardDescription>My commits across tracked repositories</CardDescription>
+          </div>
         </div>
 
         <SelectDemo />

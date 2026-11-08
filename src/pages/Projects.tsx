@@ -6,15 +6,21 @@ import Card from "@/components/ui/Card";
 import { LuFolder, LuEllipsis } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
+import AddProject from "@/components/ui/AddProject";
+import { useState } from "react";
 
 const Projects = () => {
   const projects = enSite.projects;
+  const rowClass =
+  "grid grid-cols-[minmax(300px,2fr)_160px_minmax(280px,2fr)_100px] items-center gap-6 px-4";
+
+  const [Active, setActive] = useState(false);
 
   return (
     <section>
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-4">
-          <div>
+          <div className="flex flex-col gap-2">
             <h1 className="text-lg lg:text-3xl">{projects.title}</h1>
             <p className="text-muted-foreground">{projects.description}</p>
           </div>
@@ -22,72 +28,83 @@ const Projects = () => {
         </div>
 
         <div className="flex">
-          <Button className="p-5" variant="default">
+          <Button className="p-5" variant="default" onClick={() => setActive(true)} >
             <LuPlus size={14} aria-hidden="true" />
             Add project
           </Button>
         </div>
       </div>
 
-      <Card className="mt-5">
-        <div className="flex items-center justify-between">
-          <span>Project</span>
-          <span>Status</span>
-          <span>Last commit</span>
+      <Card className="mt-5 min-w-0">
+  <div className="overflow-x-auto">
+    <div className="min-w-[950px]">
+      {/* Başlıklar */}
+      <div className={clsx(rowClass, "border-b border-border py-3")}>
+        <span>{projects.columns.project}</span>
+        <span>{projects.columns.status}</span>
+        <span>{projects.columns.lastCommit}</span>
+        <span className="sr-only">{projects.actions.more}</span>
+      </div>
+
+      {/* Proje satırları */}
+      {projects.items.map((project) => (
+        <div
+          key={project.id}
+          className={clsx(
+            rowClass,
+            "border-b border-border py-3 last:border-b-0",
+          )}
+        >
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+              <LuFolder size={20} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="truncate">{project.name}</p>
+              <p className="truncate text-sm text-muted-foreground">
+                {project.description}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-muted px-2 py-1">
+            <span
+              className={clsx("size-3 shrink-0 rounded-full", {
+                "bg-primary": project.status === "inProgress",
+                "bg-green-500": project.status === "completed",
+                "bg-gray-400": project.status === "paused",
+              })}
+            />
+            {Object.entries(projects.statuses).find(
+              ([status]) => status === project.status,
+            )?.[1]}
+          </div>
+
+          <div className="min-w-0">
+            <p>{project.lastCommit.time}</p>
+            <p className="truncate text-sm text-muted-foreground">
+              {project.lastCommit.message}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-end gap-4">
+            <div className="p-2 hover:bg-muted rounded-lg cursor-pointer">
+            <FaGithub size={20} aria-hidden="true" />
+            </div>
+            <div className="p-2 hover:bg-muted rounded-lg cursor-pointer">
+            <LuEllipsis size={20} aria-hidden="true" />
+
+            </div>
+          </div>
         </div>
+      ))}
+    </div>
+  </div>
+</Card>
 
-        <div className="flex flex-col gap-3">
-          {projects.items.map((project) => {
-            const FolderIcon = LuFolder;
-            const GithubIcon = FaGithub;
-            const Three = LuEllipsis;
+<AddProject open={Active} onOpenChange={setActive} />
 
-            return (
-              <div className="flex items-center rounded-lg justify-between gap-4 border-b border-border pb-2">
-                <div className="flex items-center gap-4">
-                  <div className="bg-muted w-10 h-10 rounded-lg flex items-center justify-center">
-                    <FolderIcon size={20} />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="text-md">{project.name}</span>
-                    <p className="text-sm text-muted-foreground">
-                      {project.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 bg-muted rounded-lg px-2 py-1 border border-border">
-                  <span
-                    className={clsx("w-3 h-3 rounded-full", {
-                      "bg-primary": project.status === "inProgress",
-                      "bg-green-500": project.status === "completed",
-                      "bg-gray-400": project.status === "paused",
-                    })}
-                  />
-                  {project.status}
-                </div>
-
-                <div className="flex flex-col items-start">
-                  <span>{project.lastCommit.time}</span>
-                  <p className="text-muted-foreground">
-                    {project.lastCommit.message}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-6">
-                  <div className="hover:bg-muted cursor-pointer rounded-lg p-2 flex items-center justify-center">
-                    <GithubIcon size={20} />
-                  </div>
-
-                  <div className="hover:bg-muted cursor-pointer rounded-lg p-2 flex items-center justify-center">
-                    <LuEllipsis size={20} />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </Card>
     </section>
   );
 };
