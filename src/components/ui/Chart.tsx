@@ -463,13 +463,13 @@ export { Card };
 export const description = "A bar chart with a label";
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "July", desktop: 250 },
+  { month: "January", desktop: 3 },
+  { month: "February", desktop: 4 },
+  { month: "March", desktop: 6 },
+  { month: "April", desktop:2 },
+  { month: "May", desktop: 2 },
+  { month: "June", desktop: 7 },
+  { month: "July", desktop: 5 },
 ];
 
 const chartConfig = {
@@ -479,9 +479,21 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const day = new Date();
+const last7 = new Date(day);
+
+last7.setDate(last7.getDate() - 7);
+
+const format = new Intl.DateTimeFormat("en-EN", {
+  day: "numeric",
+  month: "long",
+});
+
+const history = `${format.format(last7)} - ${format.format(day)}`;
+
 export function ChartBarLabel() {
   return (
-    <Card>
+    <>
       <CardHeader className="flex-row items-center justify-between">
         <div className="flex flex-col gap-2">
                   <CardTitle>Commit activity</CardTitle>
@@ -530,14 +542,14 @@ export function ChartBarLabel() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month{" "}
+           {" "} commits
           <LuTrendingUp className="size-4" aria-hidden="true" />
         </div>
         <div className="leading-none text-muted-foreground">
-
+          {history}
         </div>
       </CardFooter>
-    </Card>
+      </>
   );
 }
 

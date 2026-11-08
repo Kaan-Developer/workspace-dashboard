@@ -42,7 +42,7 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <Search />
+        <Search title="Search..." />
         <Button
           type="button"
           variant="ghost"

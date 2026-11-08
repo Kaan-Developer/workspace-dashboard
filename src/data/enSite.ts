@@ -60,6 +60,48 @@ export const enSite = {
       },
     },
   },
+  projects: {
+    title: "Projects",
+    description: "Manage your projects and keep track of what changed.",
+    demoData: "Demo data",
+    addProject: "Add project",
+    searchPlaceholder: "Search projects...",
+    statusFilter: "All statuses",
+    sortBy: "Last updated",
+    columns: {
+      project: "Project",
+      status: "Status",
+      lastCommit: "Last commit",
+      openTasks: "Open tasks",
+    },
+    statuses: {
+      inProgress: "In progress",
+      completed: "Completed",
+      paused: "Paused",
+    },
+    actions: {
+      repository: "Open GitHub repository",
+      more: "More actions",
+    },
+    items: [
+      {
+        id: "workspace-dashboard",
+        name: "workspace-dashboard",
+        description: "Personal workspace for projects and coding.",
+        status: "inProgress",
+        lastCommit: { time: "24 min ago", message: "feat: add GitHub activity overview" },
+        openTasks: 3,
+      },
+      {
+        id: "portfolio",
+        name: "portfolio",
+        description: "My personal website and selected work.",
+        status: "completed",
+        lastCommit: { time: "2 hours ago", message: "fix: improve mobile navigation" },
+        openTasks: 0,
+      },
+    ],
+  },
   navbar: {
     workspace: "Workspace",
     breadcrumbLabel: "Breadcrumb",
