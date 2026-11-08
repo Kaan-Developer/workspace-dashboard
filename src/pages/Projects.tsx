@@ -8,6 +8,8 @@ import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
 import AddProject from "@/components/ui/AddProject";
 import { useState } from "react";
+import { Line } from "recharts";
+import { Link } from "react-router";
 
 const Projects = () => {
   const projects = enSite.projects;
@@ -34,7 +36,7 @@ const Projects = () => {
             onClick={() => setActive(true)}
           >
             <LuPlus size={14} aria-hidden="true" />
-            Add project
+            {projects.addProject}
           </Button>
         </div>
       </div>
@@ -96,7 +98,9 @@ const Projects = () => {
 
                 <div className="flex items-center justify-end gap-4">
                   <div className="p-2 hover:bg-muted rounded-lg cursor-pointer">
-                    <FaGithub size={20} aria-hidden="true" />
+                    <Link className="" to={project.description}>
+                                        <FaGithub size={20} aria-hidden="true" />
+                    </Link>
                   </div>
                   <div className="p-2 hover:bg-muted rounded-lg cursor-pointer">
                     <LuEllipsis size={20} aria-hidden="true" />

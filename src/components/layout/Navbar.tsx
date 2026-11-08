@@ -2,6 +2,7 @@ import Search from "../ui/Search";
 import { LuBell, LuPanelLeft } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { useLocation } from "react-router"
+import { enSite } from "@/data/enSite";
 
 type NavbarProps = {
   sidebarOpen: boolean;
@@ -9,9 +10,9 @@ type NavbarProps = {
 };
 
 const pageTitles: Record<string, string> = {
-  "/": "Overview",
-  "/projects": "Projects",
-  "/settings": "Settings",
+  "/": enSite.navigation.items.overview,
+  "/projects": enSite.navigation.items.projects,
+  "/settings": enSite.navigation.items.settings,
 }
 
 const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
@@ -23,14 +24,14 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
   return (
     <nav className="border-b border-border flex items-center justify-between py-6 px-4">
       <div className="flex items-center gap-2">
-        <Button type="button" variant="ghost" size="icon" onClick={onToggleSidebar} aria-label={sidebarOpen ? "Yan menüyü kapat" : "Yan menüyü aç"} aria-expanded={sidebarOpen} aria-controls="workspace-sidebar"
+        <Button type="button" variant="ghost" size="icon" onClick={onToggleSidebar} aria-label={sidebarOpen ? enSite.navbar.closeSidebar : enSite.navbar.openSidebar} aria-expanded={sidebarOpen} aria-controls="workspace-sidebar"
         >
             <LuPanelLeft aria-hidden="true" />
         </Button>
 
-        <ol className="flex items-center gap-3 text-sm">
+        <ol className="hidden lg:flex items-center gap-3 text-sm">
             <li className="text-muted-foreground">
-                Workspace
+                {enSite.navbar.workspace}
             </li>
 
             <li aria-hidden="true" className="text-muted-foreground">
@@ -42,12 +43,12 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <Search title="Search..." />
+        <Search title={enSite.search.placeholder} />
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          aria-label="Bildirimler"
+          aria-label={enSite.navbar.notifications}
           className="rounded-full text-muted-foreground hover:text-foreground"
         >
           <LuBell aria-hidden="true" className="size-4" />
@@ -56,7 +57,7 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
           type="button"
           variant="secondary"
           size="icon"
-          aria-label="Kaan Hamitler profili"
+          aria-label={enSite.profile.label("Kaan Hamitler")}
           className="rounded-full text-xs font-medium"
         >
           KH

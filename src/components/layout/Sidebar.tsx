@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <aside
       id="workspace-sidebar"
-      className="flex flex-col gap-4 overflow-y-auto border-r border-border py-6 px-4 bg-sidebar text-sidebar-foreground"
+      className="flex flex-col gap-4 z-50 overflow-y-auto border-r border-border py-6 px-4 bg-sidebar text-sidebar-foreground"
     >
       <div className="border-b border-border flex items-center pb-2 gap-1">
         <img src={W} alt="" className="h-10 w-10" />

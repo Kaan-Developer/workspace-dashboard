@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
 import ChartBarDefault from "@/components/ui/Chart";
+import { useState } from "react";
 import {
   LuFolder,
   LuFolderOpen,
@@ -22,7 +23,7 @@ const Overview = () => {
   return (
     <section>
       <div>
-        <div className="flex flex-col gap-2 lg:items-center lg:justify-between">
+        <div className="flex flex-col lg:flex-row gap-2 lg:items-center lg:justify-between">
           <div className="flex flex-col gap-2">
             <h1 className="text-lg lg:text-3xl">{overview.title}</h1>
             <p className="text-muted-foreground">{overview.description}</p>
@@ -81,8 +82,10 @@ const Overview = () => {
           <div className="@container relative isolate overflow-hidden rounded-b-lg">
             <div className="overflow-x-auto">
               <div className="min-w-[950px]">
+
                 {projects.items.slice(0, 3).map((project, index) => {
                   const isThird = index === 2;
+                  const isNone = index === -1;
 
                   return (
                     <div
@@ -91,6 +94,7 @@ const Overview = () => {
                         rowClass,
                         "border-b border-border py-3 last:border-b-0",
                         isThird && "min-h-48 items-start pt-5",
+                        isNone && "minh-30 items-start pt-5"
                       )}
                     >
                       <div className="flex min-w-0 items-center gap-4">
@@ -106,10 +110,10 @@ const Overview = () => {
                         </div>
                       </div>
 
-                      <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-muted px-2 py-1">
+                      <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-muted">
                         <span
-                          className={clsx("size-3 shrink-0 rounded-full", {
-                            "bg-primary": project.status === "inProgress",
+                          className={clsx("rounded-full", {
+                            "bg-primary w-1 h-1": project.status === "inProgress",
                             "bg-green-500": project.status === "completed",
                             "bg-gray-400": project.status === "paused",
                           })}
@@ -134,6 +138,34 @@ const Overview = () => {
                 })}
               </div>
             </div>
+
+            {projects.items.length === 0 && (
+              <div className="absolute inset-x-0 bottom-0 z-10 flex h-48 flex-col items-center justify-end gap-3 px-1 pb-5 @min-[240px]:px-4">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-linear-to-b from-card/10 via-card/70 to-card backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_20%)]"
+                />
+                <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm">
+                  <LuFolderOpen className="size-4" aria-hidden="true" />
+                </div>
+                <p className="relative hidden text-center text-sm text-muted-foreground @min-[240px]:block">
+                  Hiç proje yok.
+                </p>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="relative size-10 max-w-full gap-2 rounded-full border-border bg-linear-to-br from-secondary to-background px-2 text-foreground shadow-sm hover:from-muted hover:to-secondary dark:bg-background @min-[240px]:w-auto @min-[240px]:px-5"
+                >
+                  <Link to="/projects">
+                    <LuArrowUpRight className="size-4" aria-hidden="true" />
+                    <span className="sr-only @min-[240px]:not-sr-only">
+                      Create Project
+                    </span>
+                  </Link>
+                </Button>
+              </div>
+            )}
+
             {projects.items.length >= 3 && (
               <div className="absolute inset-x-0 bottom-0 z-10 flex h-48 flex-col items-center justify-end gap-3 px-1 pb-5 @min-[240px]:px-4">
                 <div
