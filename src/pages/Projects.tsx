@@ -18,7 +18,7 @@ const Projects = () => {
 
   return (
     <section>
-      <div className="flex flex-col gap-2 lg:items-center lg:justify-between">
+      <div className="flex flex-col lg:flex-row gap-2 lg:items-center lg:justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <h1 className="text-lg lg:text-3xl">{projects.title}</h1>
