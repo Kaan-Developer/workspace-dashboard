@@ -1,0 +1,107 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - heading "workspace" [level=1] [ref=e6]
+    - navigation [ref=e7]:
+      - generic [ref=e8]:
+        - text: WORKSPACE
+        - link "Overview" [ref=e9] [cursor=pointer]:
+          - /url: /
+        - link "Projects" [ref=e16] [cursor=pointer]:
+          - /url: /projects
+        - link "Tasks" [ref=e20] [cursor=pointer]:
+          - /url: /tasks
+      - generic [ref=e25]:
+        - text: CONNECT
+        - link "AI Assistant" [ref=e26] [cursor=pointer]:
+          - /url: /ai-assistant
+      - generic [ref=e31]:
+        - text: MANAGE
+        - link "Integrations" [ref=e32] [cursor=pointer]:
+          - /url: /integrations
+        - link "Activity" [ref=e41] [cursor=pointer]:
+          - /url: /activity
+        - link "Settings" [ref=e45] [cursor=pointer]:
+          - /url: /settings
+    - button "Kaan Hamitler kaan@example.com" [ref=e51] [cursor=pointer]:
+      - generic [ref=e56]:
+        - generic [ref=e57]: Kaan Hamitler
+        - generic [ref=e58]: kaan@example.com
+  - generic [ref=e62]:
+    - navigation [ref=e63]:
+      - generic [ref=e64]:
+        - button "Close sidebar" [expanded] [ref=e65] [cursor=pointer]
+        - list [ref=e66]:
+          - listitem [ref=e67]: Workspace
+          - listitem [aria-hidden] [ref=e68]: /
+          - listitem [ref=e69]: Projects
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - searchbox "Search" [ref=e72]
+          - generic: 12 results
+        - button "Notifications" [ref=e73] [cursor=pointer]
+        - 'button "Profile: Kaan Hamitler" [ref=e74] [cursor=pointer]': KH
+    - main [ref=e75]:
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - heading "Projects" [level=1] [ref=e80]
+              - paragraph [ref=e81]: Manage your projects and keep track of what changed.
+            - generic [ref=e82]:
+              - searchbox "Search" [ref=e83]
+              - generic: 12 results
+          - button "Add project" [ref=e85] [cursor=pointer]
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: Project
+            - generic [ref=e91]: Status
+            - generic [ref=e92]: Last commit
+            - generic [ref=e93]: More actions
+          - generic [ref=e94]:
+            - generic [ref=e99]:
+              - paragraph [ref=e100]: workspace-dashboard
+              - paragraph [ref=e101]: Personal workspace for projects and coding.
+            - generic [ref=e102]: In progress
+            - generic [ref=e104]:
+              - paragraph [ref=e105]: 24 min ago
+              - paragraph [ref=e106]: "feat: add GitHub activity overview"
+            - generic [ref=e107]:
+              - link [ref=e109] [cursor=pointer]:
+                - /url: /projects/Personal workspace for projects and coding.
+              - generic [ref=e112] [cursor=pointer]
+          - generic [ref=e117]:
+            - generic [ref=e122]:
+              - paragraph [ref=e123]: portfolio
+              - paragraph [ref=e124]: My personal website and selected work.
+            - generic [ref=e125]: Completed
+            - generic [ref=e127]:
+              - paragraph [ref=e128]: 2 hours ago
+              - paragraph [ref=e129]: "fix: improve mobile navigation"
+            - generic [ref=e130]:
+              - link [ref=e132] [cursor=pointer]:
+                - /url: /projects/My personal website and selected work.
+              - generic [ref=e135] [cursor=pointer]
+          - generic [ref=e140]:
+            - generic [ref=e145]:
+              - paragraph [ref=e146]: ui-components
+              - paragraph [ref=e147]: Reusable components for React projects.
+            - generic [ref=e148]: In progress
+            - generic [ref=e150]:
+              - paragraph [ref=e151]: Yesterday
+              - paragraph [ref=e152]: "refactor: simplify button variants"
+            - generic [ref=e153]:
+              - link [ref=e155] [cursor=pointer]:
+                - /url: /projects/Reusable components for React projects.
+              - generic [ref=e158] [cursor=pointer]
+          - generic [ref=e163]:
+            - generic [ref=e168]:
+              - paragraph [ref=e169]: weather-app
+              - paragraph [ref=e170]: A simple weather app with city search.
+            - generic [ref=e171]: Paused
+            - generic [ref=e173]:
+              - paragraph [ref=e174]: 3 days ago
+              - paragraph [ref=e175]: "fix: handle empty search"
+            - generic [ref=e176]:
+              - link [ref=e178] [cursor=pointer]:
+                - /url: /projects/A simple weather app with city search.
+              - generic [ref=e181] [cursor=pointer]

@@ -43,7 +43,10 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
       </div>
 
       <div className="flex items-center gap-3">
+        <div className="hidden md:flex">
         <Search title={enSite.search.placeholder} />
+
+        </div>
         <Button
           type="button"
           variant="ghost"

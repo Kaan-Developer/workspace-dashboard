@@ -495,10 +495,10 @@ const history = `${format.format(last7)} - ${format.format(day)}`;
 export function ChartBarLabel() {
   return (
     <>
-      <CardHeader className="flex-row items-center justify-between">
-        <div className="flex flex-col items-center justify-center gap-2">
+      <CardHeader className="flex-col gap-2 lg:flex-row justify-between">
+        <div className="flex items-center gap-2">
           <FaGithub size={28} className="shrink-0" aria-hidden="true" />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col">
                               <CardTitle>Commit activity</CardTitle>
         <CardDescription>My commits across tracked repositories</CardDescription>
           </div>
