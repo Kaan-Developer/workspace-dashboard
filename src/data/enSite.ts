@@ -30,8 +30,9 @@ export const enSite = {
     },
   },
   overview: {
-    title: "Overview",
-    description: "Your projects, priorities, and progress. All in one place.",
+    greeting: (name: string) => `Good morning, ${name} 👋`,
+    title: "Here's your task overview",
+    description: "Stay on track with your projects and team progress.",
     stats: {
       trackedProjects: {
         label: "Tracked projects",

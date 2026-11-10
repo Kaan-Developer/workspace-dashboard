@@ -31,8 +31,9 @@ export const trSite = {
     },
   },
   overview: {
-    title: "Genel Bakış",
-    description: "Projelerin, önceliklerin ve ilerlemen. Hepsi bir arada.",
+    greeting: (name: string) => `Günaydın, ${name} 👋`,
+    title: "Görevlerinin genel durumu",
+    description: "Projelerini ve ekibinin ilerlemesini takip et.",
     stats: {
       trackedProjects: {
         label: "Takip edilen projeler",

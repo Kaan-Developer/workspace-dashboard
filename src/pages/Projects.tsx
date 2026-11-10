@@ -8,7 +8,6 @@ import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
 import AddProject from "@/components/ui/AddProject";
 import { useState } from "react";
-import { Line } from "recharts";
 import { Link } from "react-router";
 
 const Projects = () => {
@@ -74,7 +73,7 @@ const Projects = () => {
                   </div>
                 </div>
 
-                <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-muted px-2 py-1">
+                <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg bg-muted px-2 py-1">
                   <span
                     className={clsx("size-3 shrink-0 rounded-full", {
                       "bg-primary": project.status === "inProgress",

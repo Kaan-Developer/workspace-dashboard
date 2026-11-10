@@ -426,7 +426,7 @@ export function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
   return (
     <h3
       className={cn(
-        "text-base font-semibold leading-none tracking-tight",
+        "text-base font-normal leading-none tracking-tight",
         className,
       )}
       {...props}
@@ -530,8 +530,8 @@ export function ChartBarLabel() {
             <Bar
               dataKey="desktop"
               fill="var(--color-desktop)"
-              barSize={50}
-              radius={4}
+              barSize={40}
+              radius={8}
             >
               <LabelList
                 dataKey="desktop"

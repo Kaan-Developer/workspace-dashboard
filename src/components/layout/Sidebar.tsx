@@ -1,8 +1,8 @@
-import { Link } from "react-router";
 import { NavLink } from "react-router";
 import { Navigation } from "../../data/navigation";
 import SidebarProfile from "./SidebarProfile";
 import W from "../../assets/images/Minimalist mavi W sembolü-1.png";
+import { cn } from "@/lib/utils";
 
 const Sidebar = () => {
   return (
@@ -24,19 +24,18 @@ const Sidebar = () => {
 
             {nav.items.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.to;
 
               return (
                 <NavLink
                   key={item.id}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-lg px-3 p-2 text-sm
-    ${
-      isActive
-        ? "bg-sidebar-accent text-sidebar-accent-foreground"
-        : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-    }`
+                    cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-normal transition-colors duration-150 motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sidebar-ring",
+                      isActive
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary-hover"
+                        : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    )
                   }
                 >
                   <Icon size={18} />

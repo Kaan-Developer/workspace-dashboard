@@ -11,7 +11,7 @@ const Card = ({ children, id, className }: CardType) => {
   return (
     <div
       id={id === undefined ? undefined : String(id)}
-      className={cn("flex flex-col gap-2 rounded-xl border border-border bg-card p-4 shadow-sm", className)}
+      className={cn("flex flex-col gap-2 rounded-xl bg-card p-4 text-card-foreground shadow-card", className)}
     >
       {children}
     </div>
