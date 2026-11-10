@@ -17,7 +17,7 @@ const Search = ({ title }: Search) => {
         type="search"
         aria-label="Search"
         placeholder={title}
-        className="pl-8 pr-24"
+        className="pl-8 pr-24 active:border-none"
       />
       <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
         12 results

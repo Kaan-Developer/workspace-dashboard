@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { enSite } from "@/data/enSite";
 import { LuFolderPlus, LuLink, LuX } from "react-icons/lu";
+import type { FormEvent } from "react";
 import {
   Sheet,
   SheetClose,
@@ -22,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { description } from "./Chart";
+import { useProjectStore } from "@/store/projectStore";
 
 type AddProjectProps = {
   open: boolean;
@@ -32,6 +35,36 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
   const { form, statuses, addProject } = enSite.projects;
   const fieldClass =
     "border-border bg-background text-foreground dark:bg-background";
+
+  const saveProject = useProjectStore((state) => state.addProject);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const getText = (field: string) => {
+      const value = formData.get(field);
+      return typeof value === "string" ? value.trim() : "";
+    };
+
+    const name = getText("name");
+
+    if (name.length === 0) {
+      console.error("Proje adı boş olamaz");
+      return;
+    }
+
+    const project = {
+      id: crypto.randomUUID(),
+      name,
+      description: getText("decription"),
+      status: getText("status") || "inProgress",
+      repository: getText("repository"),
+    };
+
+    saveProject(project);
+  };
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -60,7 +93,11 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
           </Button>
         </SheetClose>
 
-        <div className="grid min-h-0 flex-1 auto-rows-min gap-6 overflow-y-auto p-6">
+        <form
+          id="add-project-form"
+          onSubmit={handleSubmit}
+          className="grid min-h-0 flex-1 auto-rows-min gap-6 overflow-y-auto p-6"
+        >
           <div className="grid gap-2">
             <Label htmlFor="project-name">{form.name}</Label>
             <Input
@@ -72,8 +109,12 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
           </div>
           <div className="grid gap-2">
             <div className="flex items-center justify-between gap-3">
-              <Label htmlFor="project-description">{form.descriptionLabel}</Label>
-              <span className="text-xs text-muted-foreground">{form.optional}</span>
+              <Label htmlFor="project-description">
+                {form.descriptionLabel}
+              </Label>
+              <span className="text-xs text-muted-foreground">
+                {form.optional}
+              </span>
             </div>
             <Textarea
               className={`${fieldClass} min-h-28 resize-y`}
@@ -106,7 +147,9 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
           <div className="grid gap-2 border-t border-border pt-6">
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor="project-repository">{form.repository}</Label>
-              <span className="text-xs text-muted-foreground">{form.optional}</span>
+              <span className="text-xs text-muted-foreground">
+                {form.optional}
+              </span>
             </div>
             <div className="relative">
               <LuLink
@@ -124,13 +167,19 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
                 aria-describedby="project-repository-hint"
               />
             </div>
-            <p id="project-repository-hint" className="text-xs leading-5 text-muted-foreground">
+            <p
+              id="project-repository-hint"
+              className="text-xs leading-5 text-muted-foreground"
+            >
               {form.repositoryHint}
             </p>
           </div>
-        </div>
+        </form>
         <SheetFooter className="shrink-0 gap-3 border-t border-border p-6">
-          <p id="project-preview-note" className="text-xs text-muted-foreground">
+          <p
+            id="project-preview-note"
+            className="text-xs text-muted-foreground"
+          >
             {form.previewNote}
           </p>
           <div className="flex gap-3">
@@ -139,7 +188,12 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
                 {form.cancel}
               </Button>
             </SheetClose>
-            <Button type="button" className="h-10 flex-1" disabled aria-describedby="project-preview-note">
+            <Button
+              type="submit"
+              form="add-project-form"
+              className={`h-10 flex-1`}
+              aria-describedby="project-preview-note"
+            >
               {addProject}
             </Button>
           </div>
