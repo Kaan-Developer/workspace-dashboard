@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { description } from "./Chart";
 import { useProjectStore } from "@/store/projectStore";
 
 type AddProjectProps = {
