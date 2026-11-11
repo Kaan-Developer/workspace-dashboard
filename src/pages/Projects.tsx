@@ -9,6 +9,7 @@ import clsx from "clsx";
 import AddProject from "@/components/ui/AddProject";
 import { useState } from "react";
 import { Link } from "react-router";
+import { useProjectStore } from "@/store/projectStore";
 
 const Projects = () => {
   const projects = enSite.projects;
@@ -16,6 +17,7 @@ const Projects = () => {
     "grid grid-cols-[minmax(300px,2fr)_160px_minmax(280px,2fr)_100px] items-center gap-6 px-4";
 
   const [Active, setActive] = useState(false);
+  const savedProjects = useProjectStore((state) => state.projects);
 
   return (
     <section>
@@ -52,7 +54,7 @@ const Projects = () => {
             </div>
 
             {/* Proje satırları */}
-            {projects.items.map((project) => (
+            {savedProjects.map((project) => (
               <div
                 key={project.id}
                 className={clsx(
@@ -89,10 +91,7 @@ const Projects = () => {
                 </div>
 
                 <div className="min-w-0">
-                  <p>{project.lastCommit.time}</p>
-                  <p className="truncate text-sm text-muted-foreground">
-                    {project.lastCommit.message}
-                  </p>
+                  <span>—</span>
                 </div>
 
                 <div className="flex items-center justify-end gap-4">

@@ -530,7 +530,7 @@ export function ChartBarLabel() {
             <Bar
               dataKey="desktop"
               fill="var(--color-desktop)"
-              barSize={40}
+              barSize={30}
               radius={8}
             >
               <LabelList
