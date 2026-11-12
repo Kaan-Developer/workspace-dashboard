@@ -46,24 +46,16 @@ const Overview = () => {
         </div>
 
         <div className="grid grid-cols-1 mt-3 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Object.entries(overview.stats).map(([id, stat]) => {
-            const Icon = stat.icon;
-            const detail =
-              "detailCount" in stat
-                ? stat.detail(stat.detailCount)
-                : stat.detail;
 
-            return (
               <Card
-                key={id}
                 className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm text-muted-foreground">
-                    {stat.label}
+                    Tracked projects
                   </span>
                   <div className="p-2 bg-muted rounded-lg">
-                    <Icon
+                    <LuFolder
                       aria-hidden="true"
                       className="size-4 text-muted-foreground"
                     />
@@ -71,16 +63,77 @@ const Overview = () => {
                 </div>
 
                 <span className="text-2xl font-normal tracking-tight tabular-nums">
-                  {stat.value}
+                  {savedProjects.length}
                 </span>
-                <span className="text-xs text-muted-foreground">{detail}</span>
+                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
               </Card>
-            );
-          })}
+
+                            <Card
+                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Tracked projects
+                  </span>
+                  <div className="p-2 bg-muted rounded-lg">
+                    <LuFolder
+                      aria-hidden="true"
+                      className="size-4 text-muted-foreground"
+                    />
+                  </div>
+                </div>
+
+                <span className="text-2xl font-normal tracking-tight tabular-nums">
+                  {savedProjects.length}
+                </span>
+                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
+              </Card>
+
+                            <Card
+                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Tracked projects
+                  </span>
+                  <div className="p-2 bg-muted rounded-lg">
+                    <LuFolder
+                      aria-hidden="true"
+                      className="size-4 text-muted-foreground"
+                    />
+                  </div>
+                </div>
+
+                <span className="text-2xl font-normal tracking-tight tabular-nums">
+                  {savedProjects.length}
+                </span>
+                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
+              </Card>
+
+                            <Card
+                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Tracked projects
+                  </span>
+                  <div className="p-2 bg-muted rounded-lg">
+                    <LuFolder
+                      aria-hidden="true"
+                      className="size-4 text-muted-foreground"
+                    />
+                  </div>
+                </div>
+
+                <span className="text-2xl font-normal tracking-tight tabular-nums">
+                  {savedProjects.length}
+                </span>
+                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
+              </Card>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[4fr_2fr] gap-4 mt-6">
         <Card>
           <ChartBarDefault />
         </Card>
@@ -105,7 +158,7 @@ const Overview = () => {
             </div>
 
             <div className="mt-auto flex shrink-0 justify-start border-t border-border pt-2">
-              <Button variant="outline">
+              <Button variant="outline" className="">
                 <FaArrowRight size={18} />
                 View activity
               </Button>
@@ -117,7 +170,7 @@ const Overview = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
         <Card className="min-w-0">
           <div className="flex items-center justify-between gap-4 border-b border-border py-3">
-            <span>Recent projects</span>
+            <span className="text-md lg:text-lg">Recent projects</span>
           </div>
           <div className="@container relative isolate overflow-hidden rounded-b-lg">
             <div className="overflow-x-auto">
@@ -219,12 +272,12 @@ const Overview = () => {
                   variant="outline"
                   className="relative size-10 max-w-full gap-2 rounded-full border-border bg-linear-to-br from-secondary to-background px-2 text-foreground shadow-sm hover:from-muted hover:to-secondary dark:bg-background @min-[240px]:w-auto @min-[240px]:px-5"
                 >
-                  <Link to="/projects">
+                  <Button onClick={() => setActive(true)}>
                     <LuPlus className="size-4" aria-hidden="true" />
                     <span className="sr-only @min-[240px]:not-sr-only">
                       Create Project
                     </span>
-                  </Link>
+                  </Button>
                 </Button>
               </div>
             )}

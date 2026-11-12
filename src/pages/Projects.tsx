@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { enSite } from "@/data/enSite";
 import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
-import { LuFolder, LuEllipsis } from "react-icons/lu";
+import { LuFolder, LuEllipsis, LuGripVertical } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
 import AddProject from "@/components/ui/AddProject";
@@ -18,6 +18,19 @@ const Projects = () => {
 
   const [Active, setActive] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
+  const moveProject = useProjectStore((state) => state.moveProject);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dropTargetId, setDropTargetId] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+
+  const resetDrag = () => {
+    setDraggedId(null);
+    setDropTargetId(null);
+  };
+
+  const announceMove = (name: string, position: number) => {
+    setAnnouncement(`${name}: position ${position + 1} of ${savedProjects.length}`);
+  };
 
   return (
     <section>
@@ -43,6 +56,11 @@ const Projects = () => {
       </div>
 
       <Card className="mt-5 min-w-0">
+        <p id="project-reorder-help" className="sr-only">
+          Drag the handle onto another row to reorder. Or focus the handle and
+          press Arrow Up or Arrow Down.
+        </p>
+        <p role="status" className="sr-only">{announcement}</p>
         <div className="overflow-x-auto">
           <div className="min-w-[950px]">
             {/* Başlıklar */}
@@ -54,15 +72,61 @@ const Projects = () => {
             </div>
 
             {/* Proje satırları */}
-            {savedProjects.map((project) => (
+            {savedProjects.map((project, index) => (
               <div
                 key={project.id}
+                onDragOver={(event) => {
+                  if (!draggedId || draggedId === project.id) return;
+                  event.preventDefault();
+                  event.dataTransfer.dropEffect = "move";
+                  setDropTargetId(project.id);
+                }}
+                onDragLeave={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                    setDropTargetId(null);
+                  }
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  if (draggedId && draggedId !== project.id) {
+                    const dragged = savedProjects.find((item) => item.id === draggedId);
+                    moveProject(draggedId, project.id);
+                    if (dragged) announceMove(dragged.name, index);
+                  }
+                  resetDrag();
+                }}
                 className={clsx(
                   rowClass,
                   "border-b border-border py-3 last:border-b-0",
+                  draggedId === project.id && "opacity-50",
+                  dropTargetId === project.id && "bg-muted ring-1 ring-inset ring-primary",
                 )}
               >
                 <div className="flex min-w-0 items-center gap-4">
+                  <button
+                    type="button"
+                    draggable
+                    aria-label={`Reorder ${project.name}`}
+                    aria-describedby="project-reorder-help"
+                    className="shrink-0 cursor-grab rounded p-2 text-muted-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary active:cursor-grabbing"
+                    onDragStart={(event) => {
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData("text/plain", project.id);
+                      setDraggedId(project.id);
+                    }}
+                    onDragEnd={resetDrag}
+                    onKeyDown={(event) => {
+                      if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+                      event.preventDefault();
+                      const targetIndex = index + (event.key === "ArrowUp" ? -1 : 1);
+                      const target = savedProjects[targetIndex];
+                      if (!target) return;
+                      moveProject(project.id, target.id);
+                      announceMove(project.name, targetIndex);
+                    }}
+                  >
+                    <LuGripVertical size={18} aria-hidden="true" />
+                  </button>
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
                     <LuFolder size={20} aria-hidden="true" />
                   </div>
