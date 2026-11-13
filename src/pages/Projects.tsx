@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { enSite } from "@/data/enSite";
 import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
-import { LuFolder, LuEllipsis, LuGripVertical } from "react-icons/lu";
+import { LuFolder, LuFolderPlus, LuEllipsis, LuGripVertical } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
 import AddProject from "@/components/ui/AddProject";
@@ -61,6 +61,31 @@ const Projects = () => {
           press Arrow Up or Arrow Down.
         </p>
         <p role="status" className="sr-only">{announcement}</p>
+        {savedProjects.length === 0 ? (
+          <div className="@container relative isolate overflow-hidden rounded-b-lg">
+            <div className="flex h-48 flex-col items-center justify-end gap-3 px-4 pb-5">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-linear-to-b from-card/10 via-card/70 to-card backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_20%)]"
+              />
+              <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm">
+                <LuFolderPlus className="size-4" aria-hidden="true" />
+              </div>
+              <p className="relative text-center text-sm text-muted-foreground">
+                {projects.empty}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setActive(true)}
+                className="relative size-10 max-w-full gap-2 rounded-full border-border bg-linear-to-br from-secondary to-background px-2 text-foreground shadow-sm hover:from-muted hover:to-secondary dark:bg-background @min-[240px]:w-auto @min-[240px]:px-5"
+              >
+                <LuPlus className="size-4" aria-hidden="true" />
+                <span className="sr-only @min-[240px]:not-sr-only">Create Project</span>
+              </Button>
+            </div>
+          </div>
+        ) : (
         <div className="overflow-x-auto">
           <div className="min-w-[950px]">
             {/* Başlıklar */}
@@ -172,6 +197,7 @@ const Projects = () => {
             ))}
           </div>
         </div>
+        )}
       </Card>
 
       <AddProject open={Active} onOpenChange={setActive} />

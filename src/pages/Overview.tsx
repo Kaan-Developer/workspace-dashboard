@@ -4,8 +4,9 @@ import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
 import ChartBarDefault from "@/components/ui/Chart";
 import { FiGitBranch } from "react-icons/fi";
-import { FaArrowRight } from "react-icons/fa";
-import { useState } from "react";
+import { GoGitCommit } from "react-icons/go";
+import { useState, useEffect } from "react";
+import { getUserCommits, type GithubCommit } from "@/services/github";
 import AddProject from "@/components/ui/AddProject";
 import {
   LuFolder,
@@ -30,6 +31,21 @@ const Overview = () => {
   const [Active, setActive] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
 
+  const [commits, setCommits] = useState<GithubCommit[]>([]);
+
+  useEffect(() => {
+    const fetchCommits = async () => {
+      try {
+        const data = await getUserCommits("kaan-developer");
+        setCommits(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCommits();
+  }, []);
+
   return (
     <section>
       <div>
@@ -39,101 +55,57 @@ const Overview = () => {
             <p className="text-muted-foreground">{overview.description}</p>
           </div>
 
-          <Button className="p-5" variant="default" onClick={() => setActive(true)} >
+          <Button
+            className="p-5"
+            variant="default"
+            onClick={() => setActive(true)}
+          >
             <LuPlus size={14} aria-hidden="true" />
             New Project
           </Button>
         </div>
 
         <div className="grid grid-cols-1 mt-3 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm text-muted-foreground">
+                Tracked projects
+              </span>
+              <div className="p-2 bg-muted rounded-lg">
+                <LuFolder
+                  aria-hidden="true"
+                  className="size-4 text-muted-foreground"
+                />
+              </div>
+            </div>
 
-              <Card
-                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    Tracked projects
-                  </span>
-                  <div className="p-2 bg-muted rounded-lg">
-                    <LuFolder
-                      aria-hidden="true"
-                      className="size-4 text-muted-foreground"
-                    />
-                  </div>
-                </div>
+            <span className="text-2xl font-normal tracking-tight tabular-nums">
+              {savedProjects.length}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {savedProjects.length} in progress
+            </span>
+          </Card>
 
-                <span className="text-2xl font-normal tracking-tight tabular-nums">
-                  {savedProjects.length}
-                </span>
-                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
-              </Card>
+          <Card className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm text-muted-foreground">Commits</span>
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100">
+                <GoGitCommit className="text-gray-500" size={20} />
+              </div>
+            </div>
 
-                            <Card
-                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    Tracked projects
-                  </span>
-                  <div className="p-2 bg-muted rounded-lg">
-                    <LuFolder
-                      aria-hidden="true"
-                      className="size-4 text-muted-foreground"
-                    />
-                  </div>
-                </div>
-
-                <span className="text-2xl font-normal tracking-tight tabular-nums">
-                  {savedProjects.length}
-                </span>
-                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
-              </Card>
-
-                            <Card
-                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    Tracked projects
-                  </span>
-                  <div className="p-2 bg-muted rounded-lg">
-                    <LuFolder
-                      aria-hidden="true"
-                      className="size-4 text-muted-foreground"
-                    />
-                  </div>
-                </div>
-
-                <span className="text-2xl font-normal tracking-tight tabular-nums">
-                  {savedProjects.length}
-                </span>
-                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
-              </Card>
-
-                            <Card
-                className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    Tracked projects
-                  </span>
-                  <div className="p-2 bg-muted rounded-lg">
-                    <LuFolder
-                      aria-hidden="true"
-                      className="size-4 text-muted-foreground"
-                    />
-                  </div>
-                </div>
-
-                <span className="text-2xl font-normal tracking-tight tabular-nums">
-                  {savedProjects.length}
-                </span>
-                <span className="text-xs text-muted-foreground">{savedProjects.length} in progress</span>
-              </Card>
+            <span className="text-2xl font-normal tracking-tight tabular-nums">
+              {commits.length}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {commits.length} fetched commits
+            </span>
+          </Card>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[4fr_2fr] gap-4 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
         <Card>
           <ChartBarDefault />
         </Card>
@@ -148,18 +120,40 @@ const Overview = () => {
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <FiGitBranch size={20} color="#b5b5bd" />
 
               <div className="flex flex-col">
-                <h2>a</h2>
-                <span></span>
-                <p>a</p>
+                {commits.slice(0, 3).map((commit) => (
+                  <div
+                    key={commit.sha}
+                    className="mt-4 flex items-center gap-2"
+                  >
+                    <FiGitBranch size={20} color="#b5b5bd" />
+
+                    <div className="flex min-w-0 flex-col">
+                      <h2 className="truncate">
+                        {commit.commit.message.split("\n")[0]}
+                      </h2>
+
+                      <span className="text-xs text-muted-foreground">
+                        {commit.commit.author?.name ?? "Unknown author"}
+                      </span>
+
+                      <p className="text-xs text-muted-foreground">
+                        {commit.commit.author?.date
+                          ? new Date(
+                              commit.commit.author.date,
+                            ).toLocaleDateString("tr-TR")
+                          : "Unknown date"}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="mt-auto flex shrink-0 justify-start border-t border-border pt-2">
               <Button variant="outline" className="">
-                <FaArrowRight size={18} />
+                <LuArrowRight className="size-4" aria-hidden="true" />
                 View activity
               </Button>
             </div>
@@ -192,9 +186,7 @@ const Overview = () => {
                     >
                       <Link to="/projects">
                         <LuArrowUpRight className="size-4" aria-hidden="true" />
-                        <span className="sr-only @min-[240px]:not-sr-only">
-                          View all projects
-                        </span>
+                        View all projects
                       </Link>
                     </Button>
                   </div>
@@ -274,7 +266,7 @@ const Overview = () => {
                 >
                   <Button onClick={() => setActive(true)}>
                     <LuPlus className="size-4" aria-hidden="true" />
-                    <span className="sr-only @min-[240px]:not-sr-only">
+                    <span className="@min-[240px]:not-sr-only">
                       Create Project
                     </span>
                   </Button>
