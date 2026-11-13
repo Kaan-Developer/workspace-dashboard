@@ -7,7 +7,7 @@ import { LuTrendingUp } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 
 import Card from "@/components/ui/Card";
-import { SelectDemo } from "@/components/ui/SelectDemo";
+import type { GithubCommit } from "@/services/github";
 import { cn } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -463,48 +463,57 @@ export { Card };
 
 export const description = "A bar chart with a label";
 
-const chartData = [
-  { month: "January", desktop: 3 },
-  { month: "February", desktop: 4 },
-  { month: "March", desktop: 6 },
-  { month: "April", desktop:2 },
-  { month: "May", desktop: 2 },
-  { month: "June", desktop: 7 },
-  { month: "July", desktop: 5 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  commits: {
+    label: "Commits",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
-const day = new Date();
-const last7 = new Date(day);
-
-last7.setDate(last7.getDate() - 7);
-
-const format = new Intl.DateTimeFormat("en-EN", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+const rangeFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
-  month: "long",
+  month: "short",
 });
 
-const history = `${format.format(last7)} - ${format.format(day)}`;
+export function ChartBarLabel({ commits }: { commits: GithubCommit[] }) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const chartData = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (6 - index));
+    const dayCommits = commits.filter((commit) => {
+      const commitDate = commit.commit.author?.date;
+      if (!commitDate) return false;
+      const parsedDate = new Date(commitDate);
+      return (
+        parsedDate.getFullYear() === date.getFullYear() &&
+        parsedDate.getMonth() === date.getMonth() &&
+        parsedDate.getDate() === date.getDate()
+      );
+    });
+    return { day: dateFormatter.format(date), commits: dayCommits.length };
+  });
+  const totalCommits = chartData.reduce(
+    (total, item) => total + item.commits,
+    0,
+  );
+  const rangeStart = new Date(today);
+  rangeStart.setDate(today.getDate() - 6);
+  const history = `${rangeFormatter.format(rangeStart)} – ${rangeFormatter.format(today)}`;
 
-export function ChartBarLabel() {
   return (
     <>
       <CardHeader className="flex-col gap-2 lg:flex-row justify-between">
         <div className="flex items-center gap-2">
           <FaGithub size={28} className="shrink-0" aria-hidden="true" />
           <div className="flex flex-col">
-                              <CardTitle>Commit activity</CardTitle>
-        <CardDescription>My commits across tracked repositories</CardDescription>
+            <CardTitle>Commit activity</CardTitle>
+            <CardDescription>
+              Commits by day over the last 7 days
+            </CardDescription>
           </div>
         </div>
-
-        <SelectDemo />
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -517,24 +526,23 @@ export function ChartBarLabel() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="day"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value: string) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Bar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="commits"
+              fill="var(--color-commits)"
               barSize={30}
               radius={8}
             >
               <LabelList
-                dataKey="desktop"
+                dataKey="commits"
                 position="top"
                 offset={12}
                 className="fill-foreground"
@@ -546,14 +554,12 @@ export function ChartBarLabel() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-           {" "} commits
+          {totalCommits} commits
           <LuTrendingUp className="size-4" aria-hidden="true" />
         </div>
-        <div className="leading-none text-muted-foreground">
-          {history}
-        </div>
+        <div className="leading-none text-muted-foreground">{history}</div>
       </CardFooter>
-      </>
+    </>
   );
 }
 

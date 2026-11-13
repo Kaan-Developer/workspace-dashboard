@@ -13,10 +13,9 @@ import {
   LuFolderOpen,
   LuFolderPlus,
   LuEllipsis,
-  LuArrowRight,
   LuArrowUpRight,
 } from "react-icons/lu";
-import { FaGithub } from "react-icons/fa";
+import { FaArrowRight, FaGithub } from "react-icons/fa";
 import clsx from "clsx";
 import { Link } from "react-router";
 import { useProjectStore } from "@/store/projectStore";
@@ -32,14 +31,21 @@ const Overview = () => {
   const savedProjects = useProjectStore((state) => state.projects);
 
   const [commits, setCommits] = useState<GithubCommit[]>([]);
+  const [commitsLoading, setCommitsLoading] = useState(true);
+  const [commitsError, setCommitsError] = useState(false);
 
   useEffect(() => {
     const fetchCommits = async () => {
       try {
-        const data = await getUserCommits("kaan-developer");
+        const weekStart = new Date();
+        weekStart.setHours(0, 0, 0, 0);
+        weekStart.setDate(weekStart.getDate() - 6);
+        const data = await getUserCommits("kaan-developer", weekStart.toISOString());
         setCommits(data);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        setCommitsError(true);
+      } finally {
+        setCommitsLoading(false);
       }
     };
 
@@ -99,7 +105,7 @@ const Overview = () => {
               {commits.length}
             </span>
             <span className="text-xs text-muted-foreground">
-              {commits.length} fetched commits
+              Last 7 days
             </span>
           </Card>
         </div>
@@ -107,7 +113,7 @@ const Overview = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
         <Card>
-          <ChartBarDefault />
+          <ChartBarDefault commits={commits} />
         </Card>
 
         <Card>
@@ -120,8 +126,22 @@ const Overview = () => {
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-
               <div className="flex flex-col">
+                {commitsLoading && (
+                  <p className="mt-4 text-sm text-muted-foreground" role="status">
+                    Loading commits…
+                  </p>
+                )}
+                {commitsError && (
+                  <p className="mt-4 text-sm text-destructive" role="alert">
+                    GitHub activity could not be loaded. Check the username or try again later.
+                  </p>
+                )}
+                {!commitsLoading && !commitsError && commits.length === 0 && (
+                  <p className="mt-4 text-sm text-muted-foreground">
+                    No commits in the last 7 days.
+                  </p>
+                )}
                 {commits.slice(0, 3).map((commit) => (
                   <div
                     key={commit.sha}
@@ -152,8 +172,11 @@ const Overview = () => {
             </div>
 
             <div className="mt-auto flex shrink-0 justify-start border-t border-border pt-2">
-              <Button variant="outline" className="">
-                <LuArrowRight className="size-4" aria-hidden="true" />
+              <Button
+                variant="ghost"
+                className="h-9 gap-2 px-2 text-sm text-muted-foreground hover:text-foreground"
+              >
+                <FaArrowRight size={14} aria-hidden="true" />
                 View activity
               </Button>
             </div>
