@@ -1,34 +1,14 @@
 import { Button } from "./button"
 import { FiGitBranch } from "react-icons/fi";
 import { FaGithub, FaArrowRight } from "react-icons/fa"
-import { useProjectStore } from "@/store/projectStore";
-import { useState, useEffect     } from "react";
-import { getUserCommits, type GithubCommit } from "@/services/github";
+import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
 
 
 const RecendCommits = () => {
-    const savedProjects = useProjectStore((state) => state.projects);
-    const [commits, setCommits] = useState<GithubCommit[]>([]);
-    const [commitsLoading, setCommitsLoading] = useState(true);
-    const [commitsError, setCommitsError] = useState(false);
-
-    useEffect(() => {
-        const fetchCommits = async () => {
-            try {
-                const weekStart = new Date();
-                weekStart.setHours(0, 0, 0, 0);
-                weekStart.setDate(weekStart.getDate() -6);
-                const data = await getUserCommits("kaan-developer", weekStart.toISOString());
-                setCommits(data);
-            } catch {
-                setCommitsError(true);
-            } finally {
-                setCommitsLoading(false);
-            };
-        };
-
-        fetchCommits();
-    }, []);
+    const { data: commits = [],
+        isLoading,
+        isError,
+    } = useWeeklyCommits("kaan-developer");
 
     return (
           <div className="flex min-h-0 flex-1 flex-col gap-2">
@@ -39,19 +19,19 @@ const RecendCommits = () => {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <div className="flex flex-col">
-                {commitsLoading && (
+                {isLoading&& (
                   <p className="mt-4 text-sm text-muted-foreground" role="status">
                     Loading commits…
                   </p>
                 )}
-                {commitsError && (
+                {isError && (
                   <p className="mt-4 text-sm text-destructive" role="alert">
                     GitHub activity could not be loaded. Check the username or try again later.
                   </p>
                 )}
-                {!commitsLoading && !commitsError && commits.length === 0 && (
+                {!isLoading&& !isError && commits.length === 0 && (
                   <p className="mt-4 text-sm text-muted-foreground">
                     No commits in the last 7 days.
                   </p>

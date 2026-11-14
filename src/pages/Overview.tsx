@@ -1,14 +1,14 @@
-import { enSite } from "@/data/enSite";
-import { Button } from "@/components/ui/button";
-import { LuPlus } from "react-icons/lu";
 import Card from "@/components/ui/Card";
 import ChartBarDefault from "@/components/ui/Chart";
-import { FiGitBranch } from "react-icons/fi";
+import { enSite } from "@/data/enSite";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+/* İCONS */
+
+import { LuPlus } from "react-icons/lu";
+import { FaGithub } from "react-icons/fa";
 import { GoGitCommit } from "react-icons/go";
-import { useState, useEffect } from "react";
-import { getUserCommits, type GithubCommit } from "@/services/github";
-import AddProject from "@/components/ui/AddProject";
-import RecendCommits from "@/components/ui/RecentCommits";
 import {
   LuFolder,
   LuFolderOpen,
@@ -16,10 +16,16 @@ import {
   LuEllipsis,
   LuArrowUpRight,
 } from "react-icons/lu";
-import { FaArrowRight, FaGithub } from "react-icons/fa";
+
+/*  */
+
+import AddProject from "@/components/ui/AddProject";
+import RecendCommits from "@/components/ui/RecentCommits";
 import clsx from "clsx";
 import { Link } from "react-router";
 import { useProjectStore } from "@/store/projectStore";
+import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
+import GithubActivity from "@/components/ui/GithubCalendar";
 
 const Overview = () => {
   const overview = enSite.overview;
@@ -31,27 +37,11 @@ const Overview = () => {
   const [Active, setActive] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
 
-  const [commits, setCommits] = useState<GithubCommit[]>([]);
-  const [commitsLoading, setCommitsLoading] = useState(true);
-  const [commitsError, setCommitsError] = useState(false);
-
-  useEffect(() => {
-    const fetchCommits = async () => {
-      try {
-        const weekStart = new Date();
-        weekStart.setHours(0, 0, 0, 0);
-        weekStart.setDate(weekStart.getDate() - 6);
-        const data = await getUserCommits("kaan-developer", weekStart.toISOString());
-        setCommits(data);
-      } catch {
-        setCommitsError(true);
-      } finally {
-        setCommitsLoading(false);
-      }
-    };
-
-    fetchCommits();
-  }, []);
+  const {
+    data: commits = [],
+    isLoading,
+    isError,
+  } = useWeeklyCommits("kaan-developer");
 
   return (
     <section>
@@ -105,16 +95,14 @@ const Overview = () => {
             <span className="text-2xl font-normal tracking-tight tabular-nums">
               {commits.length}
             </span>
-            <span className="text-xs text-muted-foreground">
-              Last 7 days
-            </span>
+            <span className="text-xs text-muted-foreground">Last 7 days</span>
           </Card>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
-        <Card>
-          <ChartBarDefault commits={commits} />
+        <Card className="min-w-0 justify-center">
+          <GithubActivity />
         </Card>
 
         <Card>
