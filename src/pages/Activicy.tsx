@@ -1,7 +1,7 @@
 import GithubActivity from "@/components/ui/GithubCalendar";
 import Card from "@/components/ui/Card";
 import { FaGithub } from "react-icons/fa";
-import Githubİmage from "../assets/images/github-mark.svg";
+import GithubImage from "../assets/images/github-mark.svg";
 import { ChartBarLabel } from "@/components/ui/Chart";
 import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
 import { Button } from "@/components/ui/button";
@@ -44,37 +44,47 @@ const Activity = () => {
 
   return (
     <section className="space-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-4">
-        <Card className="flex-row items-center px-4 py-8">
-          <div>
-            <img src={Githubİmage} alt="" className="w-30 h-30" />
+      <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr_1fr_1fr] gap-4">
+        <Card className="github-overview">
+          <div className="github-overview__mark" aria-hidden="true">
+            <img src={GithubImage} alt="" />
           </div>
 
-          <div className="flex min-w-0 flex-col">
-            <h2 className="font-semibold text-lg lg:text-xl">
-              Github Overview
-            </h2>
-            <p className="text-md text-muted-foreground">
-              Track your commits, repositories and development activicy all in
-              one place
+          <div className="github-overview__content">
+            <h2>GitHub Overview</h2>
+            <p>
+              Track your commits, repositories, and development activity in one
+              place.
             </p>
           </div>
+
+          <div aria-hidden="true" className="blue-rings" />
         </Card>
 
         {cardItems.map((item) => {
           const Icon = item.icon;
 
-          return <Card key={item.id} className="flex items-start gap-2">
-            <div className="flex p-2 bg-muted rounded-lg text-primary">
-            <Icon size={20} />
-            </div>
+          return (
+            <Card
+              key={item.id}
+              className="activity-stat"
+            >
+              <div className="activity-stat__top">
+                <div className="activity-stat__icon">
+                  <Icon size={18} aria-hidden="true" />
+                </div>
+                <span className="activity-stat__value">{item.count}</span>
+              </div>
 
-            <div>
-                          <span className="text-2xl font-semibold">{item.count}</span>
+              <p className="activity-stat__label">{item.title}</p>
 
-            <p className="text-muted-foreground text-sm">{item.title}</p>
-            </div>
-          </Card>;
+              <div aria-hidden="true" className="chart-squiggle">
+                <svg viewBox="0 0 64 44">
+                  <path d="M2 37 C12 35, 13 25, 22 28 S34 34, 40 23 S51 25, 62 10" />
+                </svg>
+              </div>
+            </Card>
+          );
         })}
       </div>
 
