@@ -1,5 +1,4 @@
-﻿
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
@@ -72,51 +71,51 @@
 .dark {
   --radius: 0.5rem;
 
-  --background: #F7F8FA;
-  --foreground: #29272B;
+  --background: #f7f8fa;
+  --foreground: #29272b;
 
-  --card: #FFFFFF;
-  --card-foreground: #29272B;
-  --card-shadow: 0 1px 3px rgb(32 28 25 / 0.03),
-    0 8px 24px -12px rgb(32 28 25 / 0.12);
+  --card: #ffffff;
+  --card-foreground: #29272b;
+  --card-shadow:
+    0 1px 3px rgb(32 28 25 / 0.03), 0 8px 24px -12px rgb(32 28 25 / 0.12);
 
-  --popover: #FFFFFF;
-  --popover-foreground: #29272B;
+  --popover: #ffffff;
+  --popover-foreground: #29272b;
 
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-foreground: #FFFFFF;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-foreground: #ffffff;
 
-  --secondary: #F0F1F3;
-  --secondary-foreground: #29272B;
+  --secondary: #f0f1f3;
+  --secondary-foreground: #29272b;
 
-  --muted: #F0F1F3;
-  --muted-foreground: #6B6C73;
+  --muted: #f0f1f3;
+  --muted-foreground: #6b6c73;
 
-  --accent: #EFF6FF;
-  --accent-foreground: #1E40AF;
+  --accent: #eff6ff;
+  --accent-foreground: #1e40af;
 
-  --destructive: #DC2626;
+  --destructive: #dc2626;
 
-  --border: #E6E7EA;
-  --input: #E6E7EA;
-  --ring: #0F1F4D;
+  --border: #e6e7ea;
+  --input: #e6e7ea;
+  --ring: #0f1f4d;
 
-  --chart-1: #2563EB;
-  --chart-2: #60A5FA;
-  --chart-3: #93C5FD;
-  --chart-4: #1D4ED8;
-  --chart-5: #DBEAFE;
+  --chart-1: #2563eb;
+  --chart-2: #60a5fa;
+  --chart-3: #93c5fd;
+  --chart-4: #1d4ed8;
+  --chart-5: #dbeafe;
 
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #29272B;
-  --sidebar-primary: #DBEAFE;
-  --sidebar-primary-hover: #C9DDFB;
-  --sidebar-primary-foreground: #1E40AF;
-  --sidebar-accent: #EFF6FF;
-  --sidebar-accent-foreground: #1E40AF;
-  --sidebar-border: #E6E7EA;
-  --sidebar-ring: #2563EB;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #29272b;
+  --sidebar-primary: #dbeafe;
+  --sidebar-primary-hover: #c9ddfb;
+  --sidebar-primary-foreground: #1e40af;
+  --sidebar-accent: #eff6ff;
+  --sidebar-accent-foreground: #1e40af;
+  --sidebar-border: #e6e7ea;
+  --sidebar-ring: #2563eb;
 }
 
 /* Global Styles */
@@ -143,10 +142,22 @@
   }
 
   ::selection {
-    background-color: color-mix(
-      in srgb,
-      var(--primary) 30%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--primary) 30%, transparent);
   }
+}
+
+.react-activity-calendar rect:hover {
+  filter: brightness(0.85);
+  cursor: pointer;
+}
+
+.react-activity-calendar__tooltip {
+  background: #fff !important;
+  color: #171717 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 8%) !important;
 }

@@ -100,19 +100,22 @@ const Overview = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
-        <Card className="min-w-0 justify-center">
-          <GithubActivity />
+<div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[3fr_1fr]">
+        <Card className="min-w-0 gap-6">
+          <GithubActivity width />
         </Card>
 
         <Card>
-          <RecendCommits />
+          <RecendCommits link />
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-4 mt-6">
         <Card className="min-w-0">
-          <div className="flex items-center justify-between gap-4 border-b border-border py-3">
+          <div className="flex items-center gap-2 border-b border-border py-3">
+            <div className="bg-muted rounded-lg">
+            <LuFolder className="size-4 text-muted-foreground"/>
+            </div>
             <span className="text-md lg:text-lg">Recent projects</span>
           </div>
           <div className="@container relative isolate overflow-hidden rounded-b-lg">

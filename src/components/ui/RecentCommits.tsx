@@ -1,10 +1,14 @@
 import { Button } from "./button"
-import { FiGitBranch } from "react-icons/fi";
-import { FaGithub, FaArrowRight } from "react-icons/fa"
+import { FaGithub } from "react-icons/fa"
 import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
+import { FiArrowRight, FiGitBranch } from "react-icons/fi";
+
+type Commit = {
+  link?: boolean;
+}
 
 
-const RecendCommits = () => {
+const RecendCommits = ({ link }: Commit ) => {
     const { data: commits = [],
         isLoading,
         isError,
@@ -65,15 +69,17 @@ const RecendCommits = () => {
               </div>
             </div>
 
-            <div className="mt-auto flex shrink-0 justify-start border-t border-border pt-2">
+            {link === true && (
+                          <div className="mt-auto flex shrink-0 justify-start border-t border-border pt-2">
               <Button
                 variant="ghost"
                 className="h-9 gap-2 px-2 text-sm text-muted-foreground hover:text-foreground"
               >
-                <FaArrowRight size={14} aria-hidden="true" />
                 View activity
+                <FiArrowRight size={14} aria-hidden="true" />
               </Button>
             </div>
+            )}
           </div>
     );
 };
