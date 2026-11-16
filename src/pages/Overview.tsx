@@ -1,5 +1,4 @@
 import Card from "@/components/ui/Card";
-import ChartBarDefault from "@/components/ui/Chart";
 import { enSite } from "@/data/enSite";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -25,7 +24,20 @@ import clsx from "clsx";
 import { Link } from "react-router";
 import { useProjectStore } from "@/store/projectStore";
 import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
-import ChartBarLabel from "@/components/ui/Chart";
+import { ChartBarLabelSquare } from "@/components/ui/SquareChart";
+
+const overviewDateValue = new Date();
+const overviewDateTime = [
+  overviewDateValue.getFullYear(),
+  String(overviewDateValue.getMonth() + 1).padStart(2, "0"),
+  String(overviewDateValue.getDate()).padStart(2, "0"),
+].join("-");
+const overviewDate = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+}).format(overviewDateValue);
 
 const Overview = () => {
   const overview = enSite.overview;
@@ -37,22 +49,24 @@ const Overview = () => {
   const [Active, setActive] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
 
-  const {
-    data: commits = [],
-    isLoading,
-    isError,
-  } = useWeeklyCommits("kaan-developer");
+  const { data: commits = [] } = useWeeklyCommits("kaan-developer");
 
   return (
     <section>
       <div>
         <div className="flex flex-col lg:flex-row gap-2 lg:items-center lg:justify-between">
           <div className="flex flex-col gap-2">
+            <time
+              className="text-xs text-muted-foreground"
+              dateTime={overviewDateTime}
+            >
+              {overviewDate}
+            </time>
             <h1 className="text-lg lg:text-3xl">{overview.title}</h1>
             <p className="text-muted-foreground">{overview.description}</p>
           </div>
 
-          <Button
+                      <Button
             className="p-5"
             variant="default"
             onClick={() => setActive(true)}
@@ -100,10 +114,8 @@ const Overview = () => {
         </div>
       </div>
 
-<div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[3fr_1fr]">
-        <Card className="min-w-0 gap-6">
-          <ChartBarLabel commits={commits} />
-        </Card>
+<div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[2fr_1fr]">
+        <ChartBarLabelSquare title="" />
 
         <Card>
           <RecendCommits link />

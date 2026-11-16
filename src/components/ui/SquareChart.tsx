@@ -1,89 +1,160 @@
-"use client"
-
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts"
-
+import { useMemo } from "react";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart"
-import { getUserCommits } from "@/services/github";
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import Card from "@/components/ui/Card";
+import { cn } from "@/lib/utils";
+import type { GithubCommit } from "@/services/github";
 
-export const description = "A bar chart with a label"
+export interface ActivityDataPoint {
+  day: string;
+  value: number;
+  active?: boolean;
+}
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+export const defaultChartData: ActivityDataPoint[] = [
+  { day: "Tue", value: 3 },
+  { day: "Wed", value: 1 },
+  { day: "Thu", value: 1 },
+  { day: "Fri", value: 2 },
+  { day: "Sat", value: 2 },
+  { day: "Sun", value: 3 },
+  { day: "Mon", value: 2, active: true },
+];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
-} satisfies ChartConfig
+export interface SquareChartProps {
+  data?: ActivityDataPoint[];
+  commits?: GithubCommit[];
+  className?: string;
+  title?: string;
+  description?: string;
+}
 
-export function ChartBarLabel() {
+const dayFormat = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+
+export function ChartBarLabelSquare({
+  data,
+  commits,
+  className,
+  title,
+  description,
+}: SquareChartProps) {
+  const chartData = useMemo(() => {
+    if (data && data.length > 0) return data;
+
+    if (commits && commits.length > 0) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return Array.from({ length: 7 }, (_, i) => {
+        const date = new Date(today);
+        date.setDate(today.getDate() - (6 - i));
+        const count = commits.filter((c) => {
+          const d = c.commit?.author?.date;
+          return d && new Date(d).toDateString() === date.toDateString();
+        }).length;
+
+        return {
+          day: dayFormat.format(date),
+          value: count,
+          active: i === 6,
+        };
+      });
+    }
+
+    return defaultChartData;
+  }, [data, commits]);
+
+  const maxValue = Math.max(...chartData.map((d) => d.value), 4);
+  const isDefaultScale = maxValue <= 4;
+  const yTicks = isDefaultScale ? [0, 1, 2, 3, 4] : undefined;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+    <Card className={cn("p-6", className)}>
+      {title && (
+        <header className="mb-4">
+          <h2 className="text-base font-semibold">{title}</h2>
+          {description && (
+            <p className="text-sm text-muted-foreground">{description}</p>
+          )}
+        </header>
+      )}
+
+      <div className="h-64 w-full">
+        <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            accessibilityLayer
             data={chartData}
-            margin={{
-              top: 20,
-            }}
+            margin={{ top: 16, right: 16, left: -10, bottom: 0 }}
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
+            <CartesianGrid
+              vertical={false}
+              stroke="var(--border, #e6e7ea)"
+              strokeDasharray="none"
+            />
+            <YAxis
+              domain={[0, isDefaultScale ? 4 : maxValue]}
+              ticks={yTicks}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickLine={false}
+              tick={{ fill: "var(--muted-foreground, #6b7280)", fontSize: 13 }}
+              width={32}
             />
-            <ChartTooltip
+            <XAxis
+              dataKey="day"
+              axisLine={false}
+              tickLine={false}
+              tickMargin={12}
+              tick={{ fill: "var(--muted-foreground, #4b5563)", fontSize: 13 }}
+            />
+            <Tooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const entry = payload[0].payload as ActivityDataPoint;
+                  return (
+                    <div className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs text-card-foreground shadow-md">
+                      <span className="font-medium text-muted-foreground">
+                        {entry.day}
+                      </span>
+                      :{" "}
+                      <span className="font-semibold text-primary">
+                        {entry.value}
+                      </span>
+                    </div>
+                  );
+                }
+                return null;
+              }}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
+            <Bar
+              dataKey="value"
+              radius={[6, 6, 0, 0]}
+              barSize={32}
+            >
+              {chartData.map((entry, index) => {
+                const isActive = entry.active ?? index === chartData.length - 1;
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={isActive ? "#2563eb" : "#93c5fd"}
+                    className="transition-colors hover:opacity-85"
+                  />
+                );
+              })}
             </Bar>
           </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
+        </ResponsiveContainer>
+      </div>
     </Card>
-  )
+  );
 }
+
+export { ChartBarLabelSquare as SquareChart };
+export default ChartBarLabelSquare;
