@@ -45,20 +45,27 @@ const Activity = () => {
   return (
     <section className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr_1fr_1fr] gap-4">
-        <Card className="github-overview">
-          <div className="github-overview__mark" aria-hidden="true">
-            <img src={GithubImage} alt="" />
+        <Card className="relative isolate flex-row items-center gap-5 overflow-hidden px-6 py-6">
+          <div className="relative z-10 grid size-[4.5rem] shrink-0 place-items-center rounded-full bg-[#0b1220] shadow-lg">
+            <img src={GithubImage} alt="" className="h-11 w-10 brightness-0 invert" />
           </div>
 
-          <div className="github-overview__content">
-            <h2>GitHub Overview</h2>
-            <p>
+          <div className="relative z-10 flex min-w-0 flex-col">
+            <h2 className="text-lg font-semibold tracking-tight lg:text-xl">
+              GitHub Overview
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
               Track your commits, repositories, and development activity in one
               place.
             </p>
           </div>
 
-          <div aria-hidden="true" className="blue-rings" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-40 -right-28 size-72 rounded-full border-[18px] border-primary/10"
+          >
+            <span className="absolute inset-8 rounded-full border-[14px] border-primary/10" />
+          </div>
         </Card>
 
         {cardItems.map((item) => {
@@ -67,20 +74,24 @@ const Activity = () => {
           return (
             <Card
               key={item.id}
-              className="activity-stat"
+              className="relative isolate flex min-h-33 flex-col justify-between gap-2 overflow-hidden border border-primary/10 bg-linear-to-br from-card to-primary/[0.04] transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:transform-none"
             >
-              <div className="activity-stat__top">
-                <div className="activity-stat__icon">
+              <div className="relative z-10 flex items-center justify-between gap-2">
+                <div className="grid size-9 shrink-0 place-items-center rounded-xl border border-primary/15 bg-primary/10 text-primary">
                   <Icon size={18} aria-hidden="true" />
                 </div>
-                <span className="activity-stat__value">{item.count}</span>
+                <span className="text-2xl font-semibold tracking-tight tabular-nums">
+                  {item.count}
+                </span>
               </div>
 
-              <p className="activity-stat__label">{item.title}</p>
+              <p className="relative z-10 m-0 max-w-[85%] text-sm font-medium text-muted-foreground">
+                {item.title}
+              </p>
 
-              <div aria-hidden="true" className="chart-squiggle">
+              <div aria-hidden="true" className="pointer-events-none absolute bottom-1 right-2 h-12 w-[4.5rem] opacity-50">
                 <svg viewBox="0 0 64 44">
-                  <path d="M2 37 C12 35, 13 25, 22 28 S34 34, 40 23 S51 25, 62 10" />
+                  <path className="fill-none stroke-primary stroke-[1.5] [stroke-linecap:round]" d="M2 37 C12 35, 13 25, 22 28 S34 34, 40 23 S51 25, 62 10" />
                 </svg>
               </div>
             </Card>
