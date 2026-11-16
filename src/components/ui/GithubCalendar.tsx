@@ -4,11 +4,7 @@ import { LuCalendarDays } from "react-icons/lu";
 
 type Activity = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
-type ActivityWidth = {
-  width: boolean;
-};
-
-const GithubActivity = ({ width }: ActivityWidth) => {
+const GithubActivity = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [total, setTotal] = useState<number | null>(null);
 

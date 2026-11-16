@@ -25,7 +25,7 @@ import clsx from "clsx";
 import { Link } from "react-router";
 import { useProjectStore } from "@/store/projectStore";
 import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
-import GithubActivity from "@/components/ui/GithubCalendar";
+import ChartBarLabel from "@/components/ui/Chart";
 
 const Overview = () => {
   const overview = enSite.overview;
@@ -102,7 +102,7 @@ const Overview = () => {
 
 <div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[3fr_1fr]">
         <Card className="min-w-0 gap-6">
-          <GithubActivity width />
+          <ChartBarLabel commits={commits} />
         </Card>
 
         <Card>
