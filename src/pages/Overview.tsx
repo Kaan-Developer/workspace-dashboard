@@ -5,11 +5,15 @@ import { useState } from "react";
 
 /* İCONS */
 
+import type { IconType } from "react-icons";
 import { LuPlus } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import { GoGitCommit } from "react-icons/go";
 import {
   LuFolder,
+  LuLoaderCircle,
+  LuGitBranch,
+  LuCalendar,
   LuFolderOpen,
   LuFolderPlus,
   LuEllipsis,
@@ -25,6 +29,14 @@ import { Link } from "react-router";
 import { useProjectStore } from "@/store/projectStore";
 import { useWeeklyCommits } from "@/hooks/useWeeklyCommit";
 import { ChartBarLabelSquare } from "@/components/ui/SquareChart";
+
+type OverviewStat = {
+  label: string;
+  value: number | string;
+  description: string;
+  icon: IconType;
+};
+
 
 const overviewDateValue = new Date();
 const overviewDateTime = [
@@ -49,7 +61,42 @@ const Overview = () => {
   const [Active, setActive] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
 
+  const inProgressProjects = savedProjects.filter((project) => project.status === "inProgress");
+
   const { data: commits = [] } = useWeeklyCommits("kaan-developer");
+
+  const activeDays = new Set(
+    commits
+    .map((item) => item.commit.author?.date?.slice(0, 10))
+    .filter((date): date is string => date !== undefined),
+  ).size;
+
+    const overviewStats: OverviewStat[] = [
+  {
+    label: "Tracked projects",
+    value: savedProjects.length,
+    description: "In your workspace",
+    icon: LuFolder,
+  },
+  {
+    label: "In progress",
+    value: inProgressProjects.length,
+    description: "0 not active",
+    icon: LuLoaderCircle,
+  },
+  {
+    label: "Commits",
+    value: commits.length,
+    description: "Last 7 days",
+    icon: LuGitBranch,
+  },
+  {
+    label: "Active days",
+    value: `${activeDays} / 7`,
+    description: "Days with a commit",
+    icon: LuCalendar,
+  },
+];
 
   return (
     <section>
@@ -66,7 +113,7 @@ const Overview = () => {
             <p className="text-muted-foreground">{overview.description}</p>
           </div>
 
-                      <Button
+          <Button
             className="p-5"
             variant="default"
             onClick={() => setActive(true)}
@@ -77,44 +124,33 @@ const Overview = () => {
         </div>
 
         <div className="grid grid-cols-1 mt-3 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm text-muted-foreground">
-                Tracked projects
-              </span>
-              <div className="p-2 bg-muted rounded-lg">
-                <LuFolder
-                  aria-hidden="true"
-                  className="size-4 text-muted-foreground"
-                />
-              </div>
-            </div>
+          {overviewStats.map((item) => {
+            const Icon = item.icon;
 
-            <span className="text-2xl font-normal tracking-tight tabular-nums">
-              {savedProjects.length}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {savedProjects.length} in progress
-            </span>
-          </Card>
+            return (
+              <Card className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    {item.label}
+                  </span>
+                  <div className="p-2 bg-muted rounded-lg">
+                    <Icon aria-hidden="true" className="size-4 text-muted-foreground"/>
+                  </div>
+                </div>
 
-          <Card className="flex flex-col transition-all gap-2 rounded-xl bg-card p-4">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm text-muted-foreground">Commits</span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100">
-                <GoGitCommit className="text-gray-500" size={20} />
-              </div>
-            </div>
-
-            <span className="text-2xl font-normal tracking-tight tabular-nums">
-              {commits.length}
-            </span>
-            <span className="text-xs text-muted-foreground">Last 7 days</span>
-          </Card>
+                <span className="text-2xl font-normal tracking-tight tabular-nums">
+                  {item.value}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {item.description}
+                </span>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
-<div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[2fr_1fr]">
+      <div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[2fr_1fr]">
         <ChartBarLabelSquare title="" />
 
         <Card>
@@ -126,7 +162,7 @@ const Overview = () => {
         <Card className="min-w-0">
           <div className="flex items-center gap-2 border-b border-border py-3">
             <div className="bg-muted rounded-lg">
-            <LuFolder className="size-4 text-muted-foreground"/>
+              <LuFolder className="size-4 text-muted-foreground" />
             </div>
             <span className="text-md lg:text-lg">Recent projects</span>
           </div>
