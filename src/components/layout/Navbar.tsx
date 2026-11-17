@@ -1,7 +1,7 @@
 import Search from "../ui/Search";
 import { LuBell, LuPanelLeft } from "react-icons/lu";
 import { Button } from "../ui/button";
-import { useLocation } from "react-router"
+import { useLocation, Link   } from "react-router"
 import { enSite } from "@/data/enSite";
 
 type NavbarProps = {
@@ -30,9 +30,9 @@ const Navbar = ({ sidebarOpen, onToggleSidebar }: NavbarProps) => {
         </Button>
 
         <ol className="hidden lg:flex items-center gap-3 text-sm">
-            <li className="text-muted-foreground">
+            <Link to="/" className="text-muted-foreground hover:text-foreground cursor-pointer">
                 {enSite.navbar.workspace}
-            </li>
+            </Link>
 
             <li aria-hidden="true" className="text-muted-foreground">
                 /

@@ -20,11 +20,8 @@ export const enSite = {
     items: {
       overview: "Overview",
       projects: "Projects",
-      tasks: "Tasks",
-      goals: "Goals",
       "ai-assistant": "AI Assistant",
       friends: "Friends",
-      integrations: "Integrations",
       activity: "Activity",
       settings: "Settings",
     },
