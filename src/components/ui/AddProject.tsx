@@ -98,6 +98,16 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
           className="grid min-h-0 flex-1 auto-rows-min gap-6 overflow-y-auto p-6"
         >
           <div className="grid gap-2">
+            <Label htmlFor="project-image">Project image</Label>
+            <Input
+              className={`${fieldClass} h-10`}
+              id="project-image"
+              name="image"
+              type="file"
+              accept="image/*"
+            />
+          </div>
+          <div className="grid gap-2">
             <Label htmlFor="project-name">{form.name}</Label>
             <Input
               className={`${fieldClass} h-10`}
