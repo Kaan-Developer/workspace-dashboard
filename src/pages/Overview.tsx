@@ -8,7 +8,6 @@ import { useState } from "react";
 import type { IconType } from "react-icons";
 import { LuPlus } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
-import { GoGitCommit } from "react-icons/go";
 import {
   LuFolder,
   LuLoaderCircle,
@@ -104,12 +103,12 @@ const Overview = () => {
         <div className="flex flex-col lg:flex-row gap-2 lg:items-center lg:justify-between">
           <div className="flex flex-col gap-2">
             <time
-              className="text-xs text-muted-foreground"
+              className="text-sm text-muted-foreground"
               dateTime={overviewDateTime}
             >
               {overviewDate}
             </time>
-            <h1 className="text-lg lg:text-3xl">{overview.title}</h1>
+            <h1 className="text-2xl lg:text-3xl">{overview.title}</h1>
             <p className="text-muted-foreground">{overview.description}</p>
           </div>
 
@@ -150,8 +149,8 @@ const Overview = () => {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 items-start gap-4 lg:grid-cols-[2fr_1fr]">
-        <ChartBarLabelSquare title="" />
+      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
+        <ChartBarLabelSquare commits={commits} />
 
         <Card>
           <RecendCommits link />
@@ -218,9 +217,9 @@ const Overview = () => {
 
                         <div className="flex w-fit items-center gap-2 whitespace-nowrap rounded-lg border border-border bg-muted">
                           <span
-                            className={clsx("rounded-full", {
-                              "bg-primary w-1 h-1":
-                                project.status === "inProgress",
+                            aria-hidden="true"
+                            className={clsx("size-2 shrink-0 rounded-full", {
+                              "bg-primary": project.status === "inProgress",
                               "bg-green-500": project.status === "completed",
                               "bg-gray-400": project.status === "paused",
                             })}

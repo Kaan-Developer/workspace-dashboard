@@ -33,19 +33,12 @@ export const Navigation: NavigationGroup[] = [
       { id: "projects", icon: LuFolder, title: "Projects", to: "/projects" },
     ],
   },
-  {
+/*   {
     id: "connect",
     title: "CONNECT",
     items: [
-      {
-        id: "ai-assistant",
-        icon: LuBot,
-        title: "AI Assistant",
-        to: "/ai-assistant",
-      },
-      { id: "friends", icon: LuUsers, title: "Friends", to: "/friends" },
     ],
-  },
+  }, */
   {
     id: "manage",
     title: "MANAGE",

@@ -17,7 +17,14 @@ const ChartBarDefault = ({ commits }: { commits: GithubCommit[] }) => {
       const d = c.commit.author?.date;
       return d && new Date(d).toDateString() === date.toDateString();
     }).length;
-    return { day: dayFormat.format(date), commits: count };
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return {
+      day: dayFormat.format(date),
+      commits: count,
+      date: `${year}-${month}-${day}`,
+    };
   });
 
   const total = data.reduce((sum, d) => sum + d.commits, 0);
@@ -39,7 +46,24 @@ const ChartBarDefault = ({ commits }: { commits: GithubCommit[] }) => {
           <LineChart data={data} margin={{ top: 20, left: 12, right: 12 }}>
             <CartesianGrid vertical={false} stroke="var(--border)" />
             <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
-            <Tooltip cursor={false} />
+            <Tooltip
+              cursor={false}
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const entry = payload[0].payload as {
+                    day: string;
+                    commits: number;
+                    date: string;
+                  };
+                  return (
+                    <div className="pointer-events-none select-none rounded-lg border border-border bg-white px-2.5 py-2 text-xs leading-tight text-neutral-900 shadow-sm">
+                      {entry.commits} contributions on {entry.date}
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
             <Line
               dataKey="commits"
               type="natural"

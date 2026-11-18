@@ -46,7 +46,7 @@ export const getUserCommits = async (
 ): Promise<GithubCommit[]> => {
   const q = `author:${username} author-date:>=${sinceDate}`;
   const response = await fetch(
-    `https://api.github.com/search/commits?q=${encodeURIComponent(q)}&sort=author-date&order=desc&per_page=100https://api.github.com/search/commits?q=${encodeURIComponent(q)}&sort=author-date&order=desc&per_page=100`,
+    `https://api.github.com/search/commits?q=${encodeURIComponent(q)}&sort=author-date&order=desc&per_page=100`,
     { signal },
   );
   if (!response.ok) {

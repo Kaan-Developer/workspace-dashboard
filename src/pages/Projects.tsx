@@ -1,26 +1,22 @@
-import Search from "@/components/ui/Search";
-import { Button } from "@/components/ui/button";
-import { enSite } from "@/data/enSite";
-import { LuPlus } from "react-icons/lu";
-import Card from "@/components/ui/Card";
-import {
-  LuFolderPlus,
-  LuEllipsis,
-  LuImage,
-} from "react-icons/lu";
+import { useState } from "react";
+import { LuPlus, LuFolderPlus, LuEllipsis, LuImage } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import clsx from "clsx";
-import AddProject from "@/components/ui/AddProject";
-import { useState } from "react";
-import { useProjectStore } from "@/store/projectStore";
 
-const ProjectImage = ({
-  src,
-  alt,
-}: {
-  src: string | null;
+import { Button } from "@/components/ui/button";
+import Card from "@/components/ui/Card";
+import AddProject from "@/components/ui/AddProject";
+import { enSite } from "@/data/enSite";
+import { useProjectStore } from "@/store/projectStore";
+// Project tipini kendi store veya types dosyandan import et:
+import type { Project } from "@/types/project";
+
+type ProjectImageProps = {
+  src?: Project["image"];
   alt: string;
-}) => {
+};
+
+const ProjectImage = ({ src, alt }: ProjectImageProps) => {
   return (
     <div className="flex aspect-[16/9] w-full items-center justify-center overflow-hidden rounded-md bg-muted">
       {src ? (
@@ -33,30 +29,31 @@ const ProjectImage = ({
 };
 
 const Projects = () => {
-  const projects = enSite.projects;
-
-  const [Active, setActive] = useState(false);
+  const projectsContent = enSite.projects;
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const savedProjects = useProjectStore((state) => state.projects);
+
+  const statusLabels = projectsContent.statuses as Record<string, string>;
 
   return (
     <section>
-      <div className="flex flex-col lg:flex-row gap-2 lg:items-center lg:justify-between">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-lg lg:text-3xl">{projects.title}</h1>
-            <p className="text-muted-foreground">{projects.description}</p>
-          </div>
-          <Search title={projects.searchPlaceholder} />
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl lg:text-3xl">
+            {projectsContent.title}
+          </h1>
+          <p className="text-muted-foreground">{projectsContent.description}</p>
         </div>
 
         <div className="flex">
           <Button
-            className="p-5"
+            type="button"
+            className="gap-2 p-5"
             variant="default"
-            onClick={() => setActive(true)}
+            onClick={() => setIsAddOpen(true)}
           >
-            <LuPlus size={14} aria-hidden="true" />
-            {projects.addProject}
+            <LuPlus size={16} aria-hidden="true" />
+            {projectsContent.addProject}
           </Button>
         </div>
       </div>
@@ -67,19 +64,19 @@ const Projects = () => {
             <div className="flex h-48 flex-col items-center justify-end gap-3 px-4 pb-5">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-linear-to-b from-card/10 via-card/70 to-card backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_20%)]"
+                className="pointer-events-none absolute inset-0 bg-gradient-to-b from-card/10 via-card/70 to-card backdrop-blur-md [mask-image:linear-gradient(to_bottom,transparent,black_20%)]"
               />
               <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm">
                 <LuFolderPlus className="size-4" aria-hidden="true" />
               </div>
               <p className="relative text-center text-sm text-muted-foreground">
-                {projects.empty}
+                {projectsContent.empty}
               </p>
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setActive(true)}
-                className="relative size-10 max-w-full gap-2 rounded-full border-border bg-linear-to-br from-secondary to-background px-2 text-foreground shadow-sm hover:from-muted hover:to-secondary dark:bg-background @min-[240px]:w-auto @min-[240px]:px-5"
+                onClick={() => setIsAddOpen(true)}
+                className="relative size-10 max-w-full gap-2 rounded-full border-border bg-gradient-to-br from-secondary to-background px-2 text-foreground shadow-sm hover:from-muted hover:to-secondary dark:bg-background @min-[240px]:w-auto @min-[240px]:px-5"
               >
                 <LuPlus className="size-4" aria-hidden="true" />
                 <span className="sr-only @min-[240px]:not-sr-only">
@@ -89,11 +86,11 @@ const Projects = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-4 mt-6">
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {savedProjects.map((project) => (
-              <Card key={project.id} className="flex flex-col gap-2 p-2">
+              <Card key={project.id} className="flex flex-col gap-3 p-3">
                 <div className="relative">
-                  <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-muted px-2 py-1 text-sm">
+                  <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-muted/90 px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur-xs">
                     <span
                       aria-hidden="true"
                       className={clsx("size-2 shrink-0 rounded-full", {
@@ -102,33 +99,39 @@ const Projects = () => {
                         "bg-gray-400": project.status === "paused",
                       })}
                     />
-                    {Object.entries(projects.statuses).find(
-                      ([status]) => status === project.status,
-                    )?.[1] ?? project.status}
+                    {statusLabels[project.status] ?? project.status}
                   </div>
                   <ProjectImage src={project.image} alt={project.name} />
                 </div>
 
-                <div>
-                  <h2 className="text-xl">{project.name}</h2>
-                  <p className="text-md text-muted-foreground">
+                <div className="flex flex-1 flex-col gap-1">
+                  <h2 className="line-clamp-1 text-lg font-semibold">
+                    {project.name}
+                  </h2>
+                  <p className="line-clamp-2 text-sm text-muted-foreground">
                     {project.description}
                   </p>
                 </div>
 
-                <div className="border-t border-border flex items-center justify-between pt-2">
+                <div className="mt-auto flex items-center justify-between border-t border-border pt-2">
                   {project.repository && (
                     <a
                       href={project.repository}
                       target="_blank"
-                      className="p-2 hover:bg-muted rounded-lg cursor-pointer"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.name} GitHub repository`}
+                      className="rounded-lg p-2 text-foreground transition-colors hover:bg-muted"
                     >
-                      <FaGithub size={22} aria-hidden="true" />
+                      <FaGithub size={20} aria-hidden="true" />
                     </a>
                   )}
-                  <div className="p-2 hover:bg-muted rounded-lg cursor-pointer">
-                    <LuEllipsis size={22} aria-hidden="true" />
-                  </div>
+                  <button
+                    type="button"
+                    aria-label={`${project.name} options`}
+                    className="ml-auto rounded-lg p-2 text-foreground transition-colors hover:bg-muted"
+                  >
+                    <LuEllipsis size={20} aria-hidden="true" />
+                  </button>
                 </div>
               </Card>
             ))}
@@ -136,7 +139,7 @@ const Projects = () => {
         )}
       </Card>
 
-      <AddProject open={Active} onOpenChange={setActive} />
+      <AddProject open={isAddOpen} onOpenChange={setIsAddOpen} />
     </section>
   );
 };

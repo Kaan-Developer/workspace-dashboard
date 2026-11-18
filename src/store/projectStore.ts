@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
-export type Project = {
+type Project = {
   id: string;
-  image: string | null;
+  image: File | null;
   name: string;
   description: string;
   status: string;

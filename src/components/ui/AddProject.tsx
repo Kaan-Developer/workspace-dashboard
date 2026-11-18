@@ -60,7 +60,9 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
     const project: Parameters<typeof saveProject>[0] = {
       id: crypto.randomUUID(),
       image:
-        imageValue instanceof File && imageValue.size > 0
+        imageValue !== null &&
+        typeof imageValue !== "string" &&
+        imageValue.size > 0
           ? URL.createObjectURL(imageValue)
           : null,
       name,
