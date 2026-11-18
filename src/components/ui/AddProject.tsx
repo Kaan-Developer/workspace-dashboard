@@ -3,8 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { enSite } from "@/data/enSite";
-import { LuFolderPlus, LuLink, LuX } from "react-icons/lu";
-import type { FormEvent } from "react";
+import { LuFolderPlus, LuImage, LuLink, LuX } from "react-icons/lu";
+import { useState, type FormEvent } from "react";
 import {
   Sheet,
   SheetClose,
@@ -36,6 +36,7 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
     "border-border bg-background text-foreground dark:bg-background";
 
   const saveProject = useProjectStore((state) => state.addProject);
+  const [selectedImageName, setSelectedImageName] = useState("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,10 +55,16 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
       return;
     }
 
-    const project = {
+    const imageValue = formData.get("image");
+
+    const project: Parameters<typeof saveProject>[0] = {
       id: crypto.randomUUID(),
+      image:
+        imageValue instanceof File && imageValue.size > 0
+          ? URL.createObjectURL(imageValue)
+          : null,
       name,
-      description: getText("decription"),
+      description: getText("description"),
       status: getText("status") || "inProgress",
       repository: getText("repository"),
     };
@@ -98,14 +105,37 @@ const AddProject = ({ open, onOpenChange }: AddProjectProps) => {
           className="grid min-h-0 flex-1 auto-rows-min gap-6 overflow-y-auto p-6"
         >
           <div className="grid gap-2">
-            <Label htmlFor="project-image">Project image</Label>
-            <Input
-              className={`${fieldClass} h-10`}
-              id="project-image"
-              name="image"
-              type="file"
-              accept="image/*"
-            />
+            <p className="text-sm font-medium leading-none">Project image</p>
+            <div className="flex min-w-0 items-center gap-3 rounded-lg border border-border bg-background p-2">
+              <Input
+                className="sr-only"
+                id="project-image"
+                name="image"
+                type="file"
+                accept="image/*"
+                aria-describedby="project-image-name"
+                onChange={(event) =>
+                  setSelectedImageName(
+                    event.currentTarget.files?.[0]?.name ?? "",
+                  )
+                }
+              />
+              <label
+                htmlFor="project-image"
+                className="inline-flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted peer-focus-visible:ring-2 peer-focus-visible:ring-ring"
+              >
+                <LuImage className="size-4" aria-hidden="true" />
+                Choose image
+              </label>
+              <span
+                id="project-image-name"
+                className="min-w-0 truncate text-sm text-muted-foreground"
+                title={selectedImageName || undefined}
+                aria-live="polite"
+              >
+                {selectedImageName || "No image selected"}
+              </span>
+            </div>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="project-name">{form.name}</Label>
