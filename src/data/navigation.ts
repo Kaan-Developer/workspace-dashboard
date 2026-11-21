@@ -7,6 +7,9 @@ import {
   LuActivity,
   LuSettings,
   LuUsers,
+  LuBoxes,
+  LuBold,
+  LuBook,
 } from "react-icons/lu";
 
 import type { IconType } from "react-icons/lib";
@@ -33,7 +36,7 @@ export const Navigation: NavigationGroup[] = [
       { id: "projects", icon: LuFolder, title: "Projects", to: "/projects" },
     ],
   },
-/*   {
+  /*   {
     id: "connect",
     title: "CONNECT",
     items: [
@@ -44,6 +47,12 @@ export const Navigation: NavigationGroup[] = [
     title: "MANAGE",
     items: [
       { id: "activity", icon: LuActivity, title: "Activity", to: "/activity" },
+      {
+        id: "repositories",
+        icon: LuBook,
+        title: "Repositories",
+        to: "/repositories",
+      },
       { id: "settings", icon: LuSettings, title: "Settings", to: "/settings" },
     ],
   },

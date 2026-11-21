@@ -58,7 +58,7 @@ const Projects = () => {
         </div>
       </div>
 
-      <Card className="mt-5 min-w-0">
+      <Card className="mt-5 min-w-0 bg-transparent shadow-none">
         {savedProjects.length === 0 ? (
           <div className="@container relative isolate overflow-hidden rounded-b-lg">
             <div className="flex h-48 flex-col items-center justify-end gap-3 px-4 pb-5">

@@ -1,3 +1,4 @@
+
 import GithubActivity from "@/components/ui/GithubCalendar";
 import Card from "@/components/ui/Card";
 import { FaGithub } from "react-icons/fa";
@@ -11,7 +12,6 @@ import RepoItem from "@/components/ui/RepoItem";
 import type { IconType } from "react-icons/lib";
 import { LuGitBranch, LuAppWindow, LuStar } from "react-icons/lu";
 import RecendCommits from "@/components/ui/RecentCommits";
-
 type Cards = {
   id: string;
   icon: IconType;
@@ -112,56 +112,14 @@ const Activity = () => {
             <GithubActivity />
           </Card>
 
-          <Card>
-            <div className="flex items-center justify-between border-b border-border pb-2">
-              <div className="flex items-center gap-2">
-                <h2>Your Repositories</h2>
-              </div>
-
-              <Button
-                variant="ghost"
-                className="h-9 gap-2 px-2 text-sm text-muted-foreground hover:text-foreground"
-              >
-                View All
-                <FiArrowRight size={14} aria-hidden="true" />
-              </Button>
-            </div>
-
-            {isLoading && (
-              <p className="text-sm text-muted-foreground">
-                Loading repositories...
-              </p>
-            )}
-
-            {isError && (
-              <p className="text-sm text-destructive">
-                Repositories could not be loaded.
-              </p>
-            )}
-
-            {!isLoading && !isError && repos.length === 0 && (
-              <p className="text-sm text-muted-foreground">
-                No repositories found.
-              </p>
-            )}
-
-            {!isLoading && !isError && repos.length > 0 && (
-              <div className="grid min-w-0 gap-1">
-                {repos.slice(0, 5).map((repo) => (
-                  <RepoItem key={repo.id} repo={repo} />
-                ))}
-              </div>
-            )}
-          </Card>
+        <Card>
+          <RecendCommits />
+        </Card>
         </div>
 
         <div className="flex flex-col gap-4">
                   <Card className="flex gap-4">
           <ChartBarLabel commits={commits} />
-        </Card>
-
-        <Card>
-          <RecendCommits />
         </Card>
         </div>
 
